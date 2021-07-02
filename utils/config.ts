@@ -1,0 +1,2 @@
+
+export const NEXT_PUBLIC_GOOGLE_MAPS_API = 'AIzaSyDt4Bnz3n7SErEtHwRso5prUZKIxIYPvos';

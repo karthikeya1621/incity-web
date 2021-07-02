@@ -1,0 +1,42 @@
+@import "./variables.scss";
+
+.popupoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+
+  .popupcontent {
+    position: relative;
+    transform: scale(0);
+    transition: transform 0.3s ease-out;
+  }
+
+  .popupcontent_visible {
+    transform: scale(1);
+  }
+
+  .closebutton {
+    @apply absolute rounded-full bg-black text-gray-100 cursor-pointer flex justify-center items-center;
+    right: -15px;
+    top: -15px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.popupoverlay_visible {
+  opacity: 1;
+  pointer-events: initial;
+}
