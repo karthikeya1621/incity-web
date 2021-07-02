@@ -10,10 +10,8 @@
     height: 480px;
   }
 
-  & > img {
+  & > .img {
     @apply absolute w-full;
-    object-fit: cover;
-    object-position: center 75%;
     height: 480px;
   }
 
@@ -51,11 +49,6 @@
       .service {
         @apply cursor-pointer p-2 my-4 mx-6 flex flex-col items-center;
         height: 100px;
-        img {
-          width: 48px;
-          height: 48px;
-          object-fit: contain;
-        }
         span {
           @apply mt-2 text-sm font-semibold text-gray-600;
           &:hover {

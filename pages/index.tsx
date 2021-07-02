@@ -17,7 +17,14 @@ export default function Home() {
   return (
     <div id="main">
       <div ref={ref} className={styles.herobanner}>
-        <img alt="" src="/images/hero-banner.jpeg" />
+        <div className={styles.img}>
+          <Image
+            layout="fill"
+            objectFit="cover"
+            alt=""
+            src="/images/hero-banner.jpeg"
+          />
+        </div>
         <div className={styles.dummy}></div>
         <div className="mx-auto max-w-4xl">
           <div className="grid grid-cols-12">
@@ -41,7 +48,10 @@ export default function Home() {
                 >
                   {Array.from({ length: 20 }).map((category: any, index) => (
                     <div key={`cat${index + 1}`} className={styles.service}>
-                      <img
+                      <Image
+                        width={48}
+                        height={48}
+                        objectFit="contain"
                         src="https://img.icons8.com/nolan/64/plumbing.png"
                         alt=""
                       />

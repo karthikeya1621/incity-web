@@ -4,6 +4,7 @@ import PhoneInput from "react-phone-input-2";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
 import AuthContext from "../context/AuthContext";
+import Image from "next/image";
 
 const LoginPopup = () => {
   const [mobileNo, setMobileNo] = useState("");
@@ -21,10 +22,15 @@ const LoginPopup = () => {
     <div className={styles.loginpopup}>
       <div className="w-full flex flex-col items-center justify-between">
         <button className={styles.googlesignin} onClick={loginWithGoogle}>
-          <img
-            src="https://img.icons8.com/color/48/000000/google-logo.png"
-            alt=""
-          />{" "}
+          <span className={styles.img}>
+            <Image
+              objectFit="contain"
+              width={20}
+              height={20}
+              src="https://img.icons8.com/color/48/000000/google-logo.png"
+              alt=""
+            />
+          </span>{" "}
           Login with Google
         </button>
         <div className={styles.divider}></div>
