@@ -2,6 +2,7 @@
   "name": "incity-web1",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -21,7 +22,8 @@
     "react-otp-input": "^2.4.0",
     "react-phone-input-2": "^2.14.0",
     "reactfire": "^3.0.0-rc.0",
-    "sass": "^1.35.1"
+    "sass": "^1.35.1",
+    "ts-node": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "17.0.11",
