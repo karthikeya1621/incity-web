@@ -1,0 +1,135 @@
+@import "./variables.scss";
+
+.headerplaceholder {
+  height: $headerHeight;
+}
+
+.header {
+  height: $headerHeight;
+  @apply fixed w-full bg-white shadow-lg;
+  z-index: 10;
+
+  .logo {
+    @apply cursor-pointer relative;
+    width: 150px;
+    height: 65px;
+  }
+
+  .searchbox {
+    @apply flex items-center;
+    .citylocation {
+      @apply text-xl text-gray-500 cursor-pointer px-4;
+      h6 {
+        @apply text-base font-semibold ml-1 pb-1 border-b-2 border-dotted border-primary inline-block;
+      }
+      span {
+        @apply relative;
+        top: 2px;
+      }
+    }
+
+    .searchbar {
+      @apply relative pl-4 border-l border-gray-200;
+      input {
+        @apply pl-2 py-1 pr-6 form-input rounded-md border border-gray-400 focus:border-primary-light focus:ring-primary-dark outline-none;
+        width: 250px;
+      }
+      span {
+        @apply absolute right-1 top-1;
+      }
+    }
+  }
+
+  .navmenu {
+    @apply h-full flex text-gray-600;
+
+    .menuitem {
+      @apply h-full px-3 border-b-4 border-transparent flex items-center cursor-pointer;
+      & > span {
+        @apply font-semibold transition-all opacity-60 hover:opacity-100;
+      }
+      &.active {
+        @apply border-b-4 border-primary text-opacity-100 cursor-default;
+        & > span {
+          @apply opacity-100;
+        }
+      }
+
+      &:hover {
+        .submenu {
+          opacity: 1;
+          pointer-events: initial;
+        }
+      }
+
+      .submenu {
+        @apply fixed bg-gray-100 shadow-md w-screen transition-all cursor-default;
+        opacity: 0;
+        pointer-events: none;
+        height: 300px;
+        z-index: 15;
+        top: $headerHeight;
+        left: 0;
+      }
+    }
+
+    .actionitem {
+      @apply h-full px-3 flex items-center relative;
+
+      &.cart {
+        @apply text-2xl;
+      }
+
+      &.login {
+        @apply border-l border-gray-100;
+      }
+
+      &.profile {
+        @apply border-l border-gray-100 cursor-pointer;
+        span {
+          @apply text-2xl mr-1 inline-block;
+        }
+      }
+
+      & .dropdown {
+        @apply absolute px-3 py-2 rounded-bl-md rounded-br-md shadow-lg transition-all mx-auto bg-gray-50;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 150px;
+        z-index: 15;
+        opacity: 0;
+        pointer-events: none;
+        margin-top: 12px;
+        transform: translateY(-12px);
+
+        &::before {
+          content: "v";
+          @apply block mx-auto top-0 left-0 right-0 absolute shadow font-semibold text-primary-light bg-white rounded-full text-center transition-transform;
+          width: 16px;
+          height: 24px;
+          transform: scaleX(1.5) translateY(-16px) rotate(180deg);
+          line-height: 18px;
+        }
+
+        ul,
+        li {
+          @apply m-0 p-0;
+        }
+
+        li {
+          @apply my-2 cursor-pointer block;
+        }
+      }
+
+      &:hover .dropdown {
+        opacity: 1;
+        pointer-events: initial;
+
+        &::before {
+          transform: scaleX(1.5) translateY(-16px) rotate(0deg);
+        }
+      }
+    }
+  }
+}

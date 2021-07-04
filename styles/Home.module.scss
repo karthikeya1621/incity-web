@@ -1,0 +1,74 @@
+@import "./variables.scss";
+
+.herobanner {
+  @apply w-full relative pb-3;
+  min-height: 600px;
+
+  & .dummy::after {
+    content: "";
+    @apply absolute top-0 left-0 w-full bg-gray-900 opacity-60 transition-opacity;
+    height: 480px;
+  }
+
+  & > .img {
+    @apply absolute w-full;
+    height: 480px;
+  }
+
+  .searchbox {
+    @apply relative w-full my-4 flex flex-col justify-center items-center;
+    height: 300px;
+
+    .searchbar {
+      @apply relative mb-2;
+      input {
+        @apply pl-3 py-2 pr-8 rounded-lg;
+        width: 400px;
+        max-width: calc(100vw - 32px);
+      }
+      span {
+        @apply absolute top-2 right-3;
+      }
+    }
+
+    small {
+      @apply text-white font-semibold;
+    }
+  }
+
+  .servicesbox {
+    @apply relative w-full my-4 flex justify-center;
+
+    .servicescard {
+      @apply bg-white shadow-md rounded-md px-3 py-2 w-full flex flex-wrap justify-between;
+      min-height: 300px;
+      max-height: 300px;
+      transition: max-height 0.75s ease-in-out;
+      overflow: hidden;
+
+      .service {
+        @apply cursor-pointer p-2 my-4 mx-6 flex flex-col items-center;
+        height: 100px;
+        span {
+          @apply mt-2 text-sm font-semibold text-gray-600;
+          &:hover {
+            @apply text-primary;
+          }
+        }
+      }
+
+      .expandbtn {
+        @apply absolute mx-auto left-0 right-0 bg-white rounded-full px-3 py-1 shadow-lg ring-1 ring-primary-light;
+        bottom: -15px;
+      }
+    }
+
+    .servicescard_expand {
+      max-height: 1000px;
+    }
+  }
+
+  &:focus-within .dummy::after {
+    @apply opacity-80;
+  }
+}

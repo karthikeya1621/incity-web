@@ -1,0 +1,29 @@
+@import "./variables.scss";
+
+.loginpopup {
+  @apply bg-white rounded-lg shadow-lg px-4 flex items-center;
+  width: 300px;
+  height: 400px;
+
+  .googlesignin {
+    @apply px-3 pt-1 pb-2 rounded-md shadow-md bg-white hover:shadow;
+
+    .img {
+      @apply inline-block relative top-1;
+    }
+  }
+
+  .divider {
+    @apply my-8 border-b border-gray-300 w-full;
+  }
+
+  .otpform {
+    @apply prose;
+    h3 {
+      @apply text-gray-600 mb-6;
+    }
+    input {
+      width: 100%;
+    }
+  }
+}

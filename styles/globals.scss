@@ -1,0 +1,35 @@
+@import "./variables.scss";
+@import url(https://cdn.jsdelivr.net/npm/@mdi/font@5.4.55/css/materialdesignicons.min.css);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  border: 0;
+  outline: 0;
+}
+
+.button-one {
+  @apply bg-primary text-white font-semibold px-3 pb-2 pt-1 rounded transition-all opacity-80 shadow hover:opacity-100 text-center cursor-pointer;
+  &:disabled {
+    @apply opacity-25 cursor-not-allowed;
+  }
+}

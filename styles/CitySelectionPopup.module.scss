@@ -1,0 +1,21 @@
+@import "./variables.scss";
+
+.cityselectionpopup {
+  @apply bg-white rounded-lg shadow-lg px-6 flex items-center;
+
+  .city {
+    @apply mx-2 p-2 flex flex-col rounded-md items-center cursor-pointer transition-opacity opacity-90 hover:opacity-100 border-2 border-transparent;
+
+    .img {
+      @apply rounded-md shadow-lg;
+    }
+
+    span {
+      @apply font-semibold text-gray-600 mt-2;
+    }
+  }
+
+  .city_selected {
+    @apply pointer-events-none border-2 border-primary;
+  }
+}
