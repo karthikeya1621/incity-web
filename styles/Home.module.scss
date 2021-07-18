@@ -47,28 +47,127 @@
       overflow: hidden;
 
       .service {
-        @apply cursor-pointer p-2 my-4 mx-6 flex flex-col items-center;
+        @apply cursor-pointer p-2 my-4 mx-4 flex flex-col items-center;
         height: 100px;
+        width: 120px;
+        .serviceimg {
+          height: 48px;
+          width: 48px;
+        }
         span {
-          @apply mt-2 text-sm font-semibold text-gray-600;
-          &:hover {
-            @apply text-primary;
-          }
+          @apply mt-2 text-sm font-semibold text-gray-600 text-center;
+          max-width: 120px;
+        }
+
+        &:hover span {
+          @apply text-primary;
         }
       }
 
       .expandbtn {
         @apply absolute mx-auto left-0 right-0 bg-white rounded-full px-3 py-1 shadow-lg ring-1 ring-primary-light;
-        bottom: -15px;
+        bottom: -25px;
       }
     }
 
     .servicescard_expand {
       max-height: 1000px;
     }
+
+    .servicescard_minified {
+      min-height: 150px;
+      width: auto;
+    }
   }
 
   &:focus-within .dummy::after {
     @apply opacity-80;
+  }
+}
+
+.dealscontainer {
+  @apply w-full max-w-screen-lg mx-auto relative py-6 mb-6 mt-4 prose;
+
+  h2 {
+    @apply text-gray-600 cursor-default relative pb-3 mx-auto;
+    max-width: max-content;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 6px;
+      width: 40px;
+      @apply bg-secondary-light;
+    }
+  }
+
+  .sliderone {
+    @apply w-full py-1;
+
+    .dealbox {
+      @apply p-3;
+      .dealcard {
+        @apply relative shadow-lg rounded-md cursor-pointer px-3 py-5 transition-all text-center hover:shadow-md prose;
+        padding-bottom: 20px;
+        height: 120px;
+        h5 {
+          @apply text-2xl font-extrabold text-gray-400;
+          background: linear-gradient(
+            to right,
+            theme("colors.primary.light") 0%,
+            theme("colors.primary.dark") 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        span {
+          @apply text-sm;
+          height: 40px;
+        }
+        small {
+          @apply mx-auto absolute bottom-1;
+        }
+
+        &:hover {
+          transform: scale(1.03);
+        }
+      }
+    }
+  }
+}
+
+.contactuscontainer {
+  @apply bg-gray-200 py-6;
+
+  h2 {
+    @apply font-bold text-gray-600 cursor-default relative pb-3;
+    max-width: max-content;
+    font-size: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3333333;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 6px;
+      width: 40px;
+      @apply bg-secondary-light;
+    }
+  }
+  .locationmap {
+    .mapbox {
+      @apply shadow border-4 border-white rounded-sm;
+      height: 300px;
+      width: 300px;
+    }
+  }
+  .contactusform {
   }
 }

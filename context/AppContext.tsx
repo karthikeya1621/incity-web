@@ -1,6 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import { createContext, useEffect, useState } from "react";
 import { NEXT_PUBLIC_GOOGLE_MAPS_API } from "../utils/config";
+import { useCities, useProviders } from "../hooks";
 
 const AppContext = createContext<any>({});
 
@@ -10,8 +11,11 @@ export const AppProvider = (props: any) => {
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [isHeaderSearchVisible, setIsHeaderSearchVisible] = useState(true);
+  const { providers, categories } = useProviders({ city: selectedCity });
 
   const router = useRouter();
+
+  const { cities } = useCities();
 
   useEffect(() => {
     // getCurrentLocation();
@@ -58,6 +62,8 @@ export const AppProvider = (props: any) => {
         setSelectedCity,
         isHeaderSearchVisible,
         setIsHeaderSearchVisible,
+        providers,
+        categories,
       }}
     >
       {props.children}

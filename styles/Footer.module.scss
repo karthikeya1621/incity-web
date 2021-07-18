@@ -1,0 +1,41 @@
+@import "./variables.scss";
+
+.footer {
+  @apply w-full relative bg-gray-800 text-white py-10;
+
+  h4 {
+    @apply uppercase font-bold text-gray-300 mb-6 text-lg;
+  }
+
+  .contactitem {
+    @apply flex items-center mb-4;
+    h6 {
+      @apply text-sm text-gray-400;
+    }
+
+    & > span:first-child {
+      @apply mr-3 rounded-full border-4 border-gray-600 text-primary-light text-center px-1 bg-gray-600;
+    }
+
+    strong {
+      @apply text-gray-400;
+    }
+  }
+
+  .serviceslist {
+    @apply flex flex-col flex-wrap;
+    height: 200px;
+    .hreflink {
+      @apply relative block;
+      margin-bottom: 8px;
+
+      & > span {
+        @apply text-primary-light;
+      }
+    }
+    h6 {
+      @apply text-xs text-gray-400 inline-block relative ml-1;
+      top: -2px;
+    }
+  }
+}

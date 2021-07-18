@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import styles from "../styles/CitySelectionPopup.module.scss";
 import Image from "next/image";
 import AppContext from "../context/AppContext";
+import { URLS } from "../utils/config";
 
 const CitySelectionPopup = () => {
   const cities = ["Hyderabad", "Warangal"];
@@ -32,9 +33,10 @@ const CitySelectionPopup = () => {
             >
               <Image
                 className={styles.img}
-                src={`/images/${city}.png`}
+                src={`images/${city}.png`}
                 width={100}
                 height={100}
+                loader={URLS.getImageLoader()}
               />
               <span>{city}</span>
             </div>

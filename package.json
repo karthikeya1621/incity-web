@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -22,6 +22,8 @@
     "react-phone-input-2": "^2.14.0",
     "reactfire": "^3.0.0-rc.0",
     "sass": "^1.35.1",
+    "slugify": "^1.6.0",
+    "swiper": "^6.7.5",
     "ts-node": "^10.0.0"
   },
   "devDependencies": {

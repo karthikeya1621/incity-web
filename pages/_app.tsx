@@ -1,10 +1,12 @@
 import "../styles/globals.scss";
+import "swiper/swiper.scss";
 import type { AppProps } from "next/app";
 import "firebase/firestore";
 import { FirebaseAppProvider } from "reactfire";
 import { AuthProvider } from "../context/AuthContext";
 import "../styles/Header.scss";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { AppProvider } from "../context/AppContext";
 
 const firebaseConfig = {
@@ -23,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <Header />
           <Component {...pageProps} />
+          <Footer />
         </AuthProvider>
       </AppProvider>
     </FirebaseAppProvider>

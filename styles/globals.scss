@@ -33,3 +33,27 @@ button {
     @apply opacity-25 cursor-not-allowed;
   }
 }
+
+.formgroup {
+  @apply pb-5 mb-1 relative;
+  label {
+    @apply block mb-1;
+  }
+  & > input,
+  & > textarea {
+    @apply w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+    resize: none;
+  }
+
+  select {
+    @apply w-full;
+  }
+
+  .errors {
+    @apply absolute text-xs text-red-500 bottom-0;
+  }
+
+  .phoneinput {
+    @apply w-full;
+  }
+}

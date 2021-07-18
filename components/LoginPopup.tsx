@@ -5,6 +5,7 @@ import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
 import AuthContext from "../context/AuthContext";
 import Image from "next/image";
+import { URLS } from "../utils/config";
 
 const LoginPopup = () => {
   const [mobileNo, setMobileNo] = useState("");

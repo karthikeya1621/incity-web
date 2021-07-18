@@ -7,6 +7,7 @@ import CitySelectionPopup from "./CitySelectionPopup";
 import AppContext from "../context/AppContext";
 import AuthContext from "../context/AuthContext";
 import Image from "next/image";
+import { URLS } from "../utils/config";
 
 function Header() {
   const router = useRouter();
@@ -34,8 +35,9 @@ function Header() {
                 <Image
                   layout="fill"
                   alt=""
-                  src="/images/logo-small.jpeg"
+                  src="images/logo-small.png"
                   objectFit="contain"
+                  loader={URLS.getImageLoader()}
                 />
               </div>
             </Link>
@@ -65,7 +67,11 @@ function Header() {
                 <div className="submenu"></div>
               </div>
               <div className="menuitem">
-                <span>Partner</span>
+                <Link href={URLS.partner_url} passHref>
+                  <a target="_blank">
+                    <span>Partner</span>
+                  </a>
+                </Link>
               </div>
               {!user && (
                 <div className="actionitem login">
