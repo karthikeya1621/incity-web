@@ -8,6 +8,7 @@ import "../styles/Header.scss";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AppProvider } from "../context/AppContext";
+import Head from "next/head";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDt4Bnz3n7SErEtHwRso5prUZKIxIYPvos",
@@ -23,6 +24,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
       <AppProvider>
         <AuthProvider>
+          <Head>
+            <meta
+              name="google-site-verification"
+              content="F00AqoCz8W0aS4s836V5xAnZJ0UFDDtX7UX8tJDJ9gI"
+            />
+          </Head>
           <Header />
           <Component {...pageProps} />
           <Footer />

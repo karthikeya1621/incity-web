@@ -35,7 +35,7 @@ function Header() {
                 <Image
                   layout="fill"
                   alt=""
-                  src="images/logo-small.png"
+                  src="/images/logo-small.png"
                   objectFit="contain"
                   loader={URLS.getImageLoader()}
                 />

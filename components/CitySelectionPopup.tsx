@@ -33,7 +33,7 @@ const CitySelectionPopup = () => {
             >
               <Image
                 className={styles.img}
-                src={`images/${city}.png`}
+                src={`/images/${city}.png`}
                 width={100}
                 height={100}
                 loader={URLS.getImageLoader()}

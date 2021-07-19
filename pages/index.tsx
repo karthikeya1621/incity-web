@@ -28,7 +28,7 @@ export default function Home() {
             layout="fill"
             objectFit="cover"
             alt=""
-            src="images/hero-banner.jpeg"
+            src="/images/hero-banner.jpeg"
             loader={URLS.getImageLoader()}
           />
         </div>
@@ -67,7 +67,7 @@ export default function Home() {
                       <span>{category.category}</span>
                     </div>
                   ))}
-                  <div className="ml-auto"></div>
+                  {categories.length % 6 > 0 && <div className="ml-auto"></div>}
                   {categories.length > 12 && (
                     <button
                       className={styles.expandbtn}
