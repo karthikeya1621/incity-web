@@ -8,37 +8,43 @@ export const useProviders = ({ city }: { city?: string }) => {
   const [allCategories, setAllCategories] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchAllProviders();
-  }, []);
+    if (city) {
+      fetchAllProviders();
+    }
+  }, [city]);
 
   useEffect(() => {
     if (city && allProviders) {
       const providersByCity = allProviders.filter(
-        (provider: any) => provider.city == city
+        (provider: any) => provider.city == city || true
       );
       setProviders(providersByCity);
     }
-  }, [city, allProviders]);
+  }, [allProviders]);
 
   useEffect(() => {
     if (providers.length) {
-      console.log(allCategories);
       const categs: any[] = [];
       providers.forEach((provider, index) => {
         const newCategory = allCategories.filter(
-          (c) => c.id === provider.category_id
+          (c) =>
+            c.id + "" === provider.category_id + "" &&
+            provider.category.trim().length
         );
         const categoryExists = categs.some(
-          (c) => c.id === provider.category_id
+          (c) =>
+            c.id + "" === provider.category_id + "" &&
+            provider.category.trim().length
         );
-        if (!categoryExists) {
+        if (!categoryExists && provider.category.trim().length) {
           categs.push({
             category: provider.category.trim(),
-            id: provider.category_id,
+            id: provider.category_id + "",
             link: slugify(provider.category),
           });
         }
       });
+      console.log(categs);
       setCategories(categs);
     }
   }, [providers]);
@@ -47,7 +53,8 @@ export const useProviders = ({ city }: { city?: string }) => {
     await fetchAllCategories();
     try {
       const response = await fetch(
-        "https://pochieshomeservices.com/RestApi/api/auth/ProvidersList"
+        "https://pochieshomeservices.com/RestApi/api/auth/ProvidersList?key=incitykey!&city=" +
+          city
       );
       const result = await response.json();
       if (result.data && result.data.length) {
@@ -79,5 +86,6 @@ export const useProviders = ({ city }: { city?: string }) => {
   return {
     providers,
     categories,
+    allCategories,
   };
 };

@@ -11,7 +11,9 @@ export const AppProvider = (props: any) => {
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [isHeaderSearchVisible, setIsHeaderSearchVisible] = useState(true);
-  const { providers, categories } = useProviders({ city: selectedCity });
+  const { providers, categories, allCategories } = useProviders({
+    city: selectedCity,
+  });
 
   const router = useRouter();
 
@@ -64,6 +66,7 @@ export const AppProvider = (props: any) => {
         setIsHeaderSearchVisible,
         providers,
         categories,
+        allCategories,
       }}
     >
       {props.children}

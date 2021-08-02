@@ -1,11 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import AppContext from "../context/AppContext";
 import styles from "../styles/Home.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { URLS } from "../utils/config";
+import Link from "next/link";
+import slugify from "slugify";
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -47,42 +49,54 @@ export default function Home() {
               </div>
             </div>
             <div className="col-span-12">
-              <div className={styles.servicesbox}>
-                <div
-                  className={`${styles.servicescard} ${
-                    isExpanded && styles.servicescard_expand
-                  } ${categories.length <= 6 && styles.servicescard_minified}`}
-                >
-                  {(categories as any[]).map((category, index) => (
-                    <div key={`cat${index + 1}`} className={styles.service}>
-                      <div className={styles.serviceimg}>
-                        <Image
-                          width={48}
-                          height={48}
-                          objectFit="contain"
-                          src="https://img.icons8.com/nolan/64/plumbing.png"
-                          alt=""
-                        />
-                      </div>
-                      <span>{category.category}</span>
-                    </div>
-                  ))}
-                  {categories.length % 6 > 0 && <div className="ml-auto"></div>}
-                  {categories.length > 12 && (
-                    <button
-                      className={styles.expandbtn}
-                      onClick={() => setIsExpanded(!isExpanded)}
-                    >
-                      See {isExpanded ? "less" : "more"}{" "}
-                      <span
-                        className={`mdi mdi-chevron-${
-                          isExpanded ? "up" : "down"
-                        }`}
-                      ></span>
-                    </button>
-                  )}
+              {categories.length > 0 && (
+                <div className={styles.servicesbox}>
+                  <div
+                    className={`${styles.servicescard} ${
+                      isExpanded && styles.servicescard_expand
+                    } ${
+                      categories.length <= 6 && styles.servicescard_minified
+                    }`}
+                  >
+                    {(categories as any[]).map((category, index) => (
+                      <Link
+                        href={`/category/${slugify(category.category)}`}
+                        passHref
+                        key={`cat${index + 1}`}
+                      >
+                        <a key={`cat${index + 1}`} className={styles.service}>
+                          <div className={styles.serviceimg}>
+                            <Image
+                              width={48}
+                              height={48}
+                              objectFit="contain"
+                              src="https://img.icons8.com/nolan/64/plumbing.png"
+                              alt=""
+                            />
+                          </div>
+                          <span>{category.category}</span>
+                        </a>
+                      </Link>
+                    ))}
+                    {categories.length % 6 > 0 && (
+                      <div className="ml-auto"></div>
+                    )}
+                    {categories.length > 12 && (
+                      <button
+                        className={styles.expandbtn}
+                        onClick={() => setIsExpanded(!isExpanded)}
+                      >
+                        See {isExpanded ? "less" : "more"}{" "}
+                        <span
+                          className={`mdi mdi-chevron-${
+                            isExpanded ? "up" : "down"
+                          }`}
+                        ></span>
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

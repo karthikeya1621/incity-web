@@ -1,0 +1,81 @@
+@import "./variables.scss";
+
+.servicedetailspage {
+  @apply relative w-full;
+  min-height: 600px;
+
+  .servicebanner {
+    @apply relative bg-gray-200 w-full;
+    height: 400px;
+  }
+
+  .subcats {
+    @apply w-full flex;
+    overflow-y: auto;
+
+    .subcat {
+      @apply flex-1 py-3 px-2 border border-gray-100 border-b-4 text-center cursor-pointer block text-sm capitalize;
+      border-bottom-color: transparent;
+      max-width: 180px;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: pre;
+    }
+
+    .subcat_active {
+      border-bottom-color: theme("colors.secondary.light");
+      @apply cursor-default;
+    }
+  }
+
+  .servicecontent {
+    @apply py-4;
+  }
+
+  .subsubcats {
+    .subsubcat {
+      @apply block my-3 py-2 px-3 border-2 border-transparent rounded cursor-pointer hover:bg-gray-100 text-sm capitalize;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: pre;
+    }
+
+    .subsubcat_active {
+      @apply border-gray-700 cursor-default;
+    }
+  }
+
+  .serviceslist {
+    @apply px-6;
+    .servicecard {
+      @apply flex flex-wrap mb-10;
+      .serviceimg {
+        @apply relative rounded mr-3 mb-3;
+        width: 110px;
+        height: 110px;
+      }
+    }
+
+    .serviceinfo {
+      @apply prose;
+      h4 {
+        @apply text-gray-700 w-full;
+      }
+      .priceinfo {
+        .newprice {
+          @apply inline-block text-xl text-secondary font-bold;
+        }
+        .oldprice {
+          @apply inline-block text-lg text-secondary-light opacity-40 ml-3 font-semibold;
+        }
+      }
+    }
+
+    .servicedetails {
+      @apply w-full prose;
+
+      p {
+      }
+    }
+  }
+}

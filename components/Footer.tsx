@@ -48,7 +48,7 @@ const Footer = () => {
               <Link
                 key={`footer-cat-${category.id}`}
                 passHref={true}
-                href={`/${category.link}`}
+                href={`/category/${category.link}`}
               >
                 <a
                   key={`footer-cat-${category.id}`}

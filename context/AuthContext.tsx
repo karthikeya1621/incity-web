@@ -11,12 +11,17 @@ export const AuthProvider = (props: any) => {
   const router = useRouter();
   const { setIsLoginPopupVisible } = useContext(AppContext);
   const { data: user } = useUser();
+  const [userData, setUserData] = useState<any>(null);
   const [recaptchaVerfied, setRecaptchaVerified] = useState(false);
   const [otpConfirmResult, setOtpConfirmResult] =
     useState<firebase.auth.ConfirmationResult | null>(null);
 
   useEffect(() => {
-    console.log(user);
+    if (user && (user.email || user.phoneNumber)) {
+      getUserData(user.email, user.phoneNumber?.slice(0, 3));
+    } else {
+      setUserData(null);
+    }
   }, [user]);
 
   const loginWithGoogle = async () => {
@@ -72,10 +77,29 @@ export const AuthProvider = (props: any) => {
     }
   };
 
+  const getUserData = async (
+    email?: string | null,
+    phoneNumber?: string | null
+  ) => {
+    try {
+      const response = await fetch(
+        `https://pochieshomeservices.com/RestApi/api/auth/user?email=${email}&phonenumber=${phoneNumber}`
+      );
+      const result = await response.json();
+      console.log(result);
+      if (result.data) {
+        setUserData(result.data);
+      }
+    } catch (err) {
+      console.log("Fetch UserData Error", err);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        userData,
         recaptchaVerfied,
         loginWithGoogle,
         loginWithOtp,

@@ -20,6 +20,7 @@
     "react-intersection-observer": "^8.32.0",
     "react-otp-input": "^2.4.0",
     "react-phone-input-2": "^2.14.0",
+    "react-tooltip": "^4.2.21",
     "reactfire": "^3.0.0-rc.0",
     "sass": "^1.35.1",
     "slugify": "^1.6.0",
