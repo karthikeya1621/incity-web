@@ -12,7 +12,7 @@ export const useSubSubCategs = (subCategoryId: string) => {
   const fetchSubSubCategs = async () => {
     try {
       const response = await fetch(
-        `http://pochieshomeservices.com/RestApi/api/SubmCategory/SubmcategoryList?key=incitykey!&cat_id_sub=${subCategoryId}`
+        `https://pochieshomeservices.com/RestApi/api/SubmCategory/SubmcategoryList?key=incitykey!&cat_id_sub=${subCategoryId}`
       );
       const result = await response.json();
       if (result.data && result.data.length) {
