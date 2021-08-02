@@ -265,3 +265,10 @@ export async function getStaticProps(context: any) {
     },
   };
 }
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true,
+  };
+}
