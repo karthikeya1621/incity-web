@@ -83,7 +83,7 @@ export const AuthProvider = (props: any) => {
   ) => {
     try {
       const response = await fetch(
-        `https://pochieshomeservices.com/RestApi/api/auth/user?email=${email}&phonenumber=${phoneNumber}`
+        `https://pochieshomeservices.com/RestApi/api/auth/user?key=incitykey!&email=${email}&phonenumber=${phoneNumber}`
       );
       const result = await response.json();
       console.log(result);
