@@ -95,7 +95,7 @@ const AddressSelectionPopup = () => {
     });
     setPlaceData(currentLocationData);
     if (searchInput.current) {
-      (searchInput.current as HTMLInputElement).value = "";
+      (searchInput.current as any).value = "";
     }
   };
 
