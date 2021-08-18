@@ -35,7 +35,7 @@ function Header() {
 
   useEffect(() => {
     if (isIntroDone == "false" && videoElem.current) {
-      (videoElem.current as HTMLVideoElement).play();
+      (videoElem.current as any).play();
     }
   }, [isIntroDone, videoElem]);
 
