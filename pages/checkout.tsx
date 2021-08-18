@@ -232,6 +232,7 @@ const CheckoutPage = () => {
         );
         const resultdata = await result.json();
         console.log(resultdata);
+        router.replace("/bookings");
       },
       prefill: {
         name: user.displayName || userData.name,
