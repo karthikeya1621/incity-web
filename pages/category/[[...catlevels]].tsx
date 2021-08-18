@@ -60,7 +60,7 @@ const ServiceDetailsPage = (props: any) => {
 
   useEffect(() => {
     if (subsubcatholder && subsubcatholder.current) {
-      var element = ReactDOM.findDOMNode(subsubcatholder.current);
+      var element = subsubcatholder.current;
       console.log(element);
       setTimeout(() => {
         const clientHeight = (element as any).getBoundingClientRect().height;
