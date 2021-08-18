@@ -1,0 +1,70 @@
+@import "./variables.scss";
+
+.bookingspage {
+  @apply w-full max-w-screen-lg mx-auto relative my-16;
+  min-height: 600px;
+  .headingone {
+    @apply text-gray-600 cursor-default relative pb-2 text-xl font-semibold mb-4;
+    max-width: max-content;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 6px;
+      width: 40px;
+      @apply bg-secondary-light;
+    }
+  }
+
+  .bookings {
+    @apply relative mt-10;
+    .booking {
+      @apply relative rounded-md shadow-md bg-gray-50 px-4 py-3 mb-16 flex flex-wrap;
+      .serviceitem {
+        @apply relative flex p-2 rounded-md bg-white mx-1 my-2 shadow;
+        width: 320px;
+        div:first-child {
+          min-width: 250px;
+          h6 {
+            @apply text-sm font-semibold text-gray-800 mb-0 pb-0;
+          }
+          span {
+            @apply text-xs mb-2 inline-block;
+          }
+        }
+
+        div:last-child {
+          @apply justify-center items-center text-secondary font-semibold;
+        }
+      }
+
+      .orderinfo {
+        @apply relative w-full px-3 mx-1 mb-3 py-2 rounded-md border-2 border-primary-light text-gray-600 flex justify-between;
+
+        .status {
+          @apply absolute mx-auto bottom-full left-0 right-0 block w-max bg-primary-light px-2 py-1 text-sm uppercase font-bold text-primary-darker rounded-tl-md rounded-tr-md;
+        }
+
+        li {
+          @apply my-1 font-semibold;
+          list-style-type: none;
+          padding: 0;
+          &:first-of-type {
+            @apply font-bold text-secondary text-lg;
+          }
+
+          .key {
+            @apply text-sm inline-block mr-2;
+            min-width: 60px;
+            &::after {
+              content: ":";
+            }
+          }
+        }
+      }
+    }
+  }
+}

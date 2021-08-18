@@ -5,8 +5,20 @@
   min-height: 600px;
 
   .servicebanner {
-    @apply relative bg-gray-200 w-full;
+    @apply relative w-full max-w-screen-lg mx-auto mt-6 mb-1 rounded overflow-hidden;
     height: 400px;
+
+    .categorydetails {
+      @apply absolute w-full bottom-0 px-3 py-2 bg-secondary bg-opacity-90 text-white;
+
+      h1 {
+        @apply text-4xl font-extrabold mb-2;
+      }
+
+      p {
+        @apply mb-2;
+      }
+    }
   }
 
   .subcats {
@@ -30,29 +42,56 @@
 
   .servicecontent {
     @apply py-4;
+
+    .subsubcatsholder {
+      @apply relative w-full bg-white transition-all;
+
+      &.subsubcatsholder_fixed {
+        @apply fixed shadow-md rounded-lg z-10 px-2 py-2 mt-1 mx-auto left-0 right-0 max-w-screen-xl;
+        top: $headerHeight;
+        width: auto;
+        .subsubcats {
+          @apply m-auto justify-center;
+        }
+      }
+    }
   }
 
   .subsubcats {
+    @apply flex flex-wrap mb-8;
     .subsubcat {
-      @apply block my-3 py-2 px-3 border-2 border-transparent rounded cursor-pointer hover:bg-gray-100 text-sm capitalize;
+      @apply block my-2 mx-1 py-2 px-3 border-2 border-gray-800 rounded cursor-pointer hover:bg-gray-100 text-sm capitalize;
       overflow-x: hidden;
       text-overflow: ellipsis;
       white-space: pre;
     }
 
     .subsubcat_active {
-      @apply border-gray-700 cursor-default;
+      @apply bg-gray-800 text-white cursor-default hover:bg-gray-800;
     }
   }
 
   .serviceslist {
-    @apply px-6;
+    @apply px-1;
     .servicecard {
-      @apply flex flex-wrap mb-10;
+      @apply flex flex-wrap mb-12;
       .serviceimg {
         @apply relative rounded mr-3 mb-3;
         width: 110px;
         height: 110px;
+        background-image: url(/images/placeholder.gif);
+      }
+
+      .counter {
+        @apply flex justify-between w-full relative items-center pr-3;
+        button {
+          @apply px-1 rounded shadow font-extrabold text-primary-dark text-xl;
+          width: 32px;
+          height: 32px;
+        }
+        span {
+          @apply font-semibold text-secondary;
+        }
       }
     }
 

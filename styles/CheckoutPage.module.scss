@@ -1,0 +1,118 @@
+@import "./variables.scss";
+
+.checkoutpage {
+  min-height: 600px;
+  .headingone {
+    @apply text-gray-600 cursor-default relative pb-2 text-xl font-semibold mb-4;
+    max-width: max-content;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 6px;
+      width: 40px;
+      @apply bg-secondary-light;
+    }
+  }
+  .slotpicker {
+    @apply my-6;
+
+    .timeslot {
+      @apply block px-3 py-2 border border-primary rounded-lg mr-4 my-2 text-sm font-semibold text-gray-700 cursor-pointer;
+
+      &.timeslot_active {
+        @apply bg-primary-dark text-white pointer-events-none;
+      }
+    }
+
+    .dateslot {
+      @apply block px-3 py-2 border border-secondary-light rounded-lg mr-4 my-2 text-sm font-semibold text-gray-700 cursor-pointer;
+
+      &.dateslot_active {
+        @apply bg-secondary text-white pointer-events-none;
+      }
+    }
+  }
+
+  .cartitems {
+    @apply my-6;
+    .cartitem {
+      @apply flex mb-10;
+      .itemimage {
+        @apply rounded-md mr-3 relative;
+        width: 140px;
+        height: 100px;
+        overflow: hidden;
+        background-image: url(/images/placeholder.gif);
+      }
+      .iteminfo {
+        @apply flex flex-col justify-between pr-3 mr-3 border-r;
+        h3 {
+          width: 200px;
+          text-overflow: ellipsis;
+          overflow-x: hidden;
+          white-space: nowrap;
+        }
+        .itemprice {
+          @apply text-gray-500 font-semibold text-sm;
+        }
+        .counter {
+          @apply flex justify-between w-full relative items-center pr-3;
+          max-width: 120px;
+          button {
+            @apply px-1 rounded shadow font-extrabold text-primary-dark text-xl;
+            width: 32px;
+            height: 32px;
+          }
+          span {
+            @apply font-semibold text-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  .pricedetails {
+    @apply py-3 my-8;
+    & > div {
+      @apply flex justify-between mb-2 px-3;
+      b {
+        @apply text-right text-gray-700;
+      }
+    }
+    .totalprice {
+      @apply text-xl bg-gray-50 shadow-lg rounded-md mt-3 py-3;
+      span {
+        @apply text-gray-700;
+      }
+      b {
+        @apply text-secondary text-2xl;
+      }
+    }
+  }
+
+  .paymentmethods {
+    @apply mt-10 mb-10;
+  }
+
+  .serviceaddress {
+    @apply mt-10;
+    & > div {
+      @apply flex items-center flex-wrap;
+      min-height: 50px;
+    }
+    .addresscard {
+      @apply mr-3 my-3 px-2 py-3 rounded-lg border-dashed border-2;
+    }
+    .picklocation {
+      @apply font-semibold text-secondary-light underline cursor-pointer;
+    }
+
+    p {
+      @apply text-sm mb-1;
+    }
+  }
+}

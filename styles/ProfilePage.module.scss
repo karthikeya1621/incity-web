@@ -1,0 +1,55 @@
+@import "./variables.scss";
+
+.profilepage {
+  @apply w-full max-w-screen-lg mx-auto relative my-16;
+  min-height: 500px;
+  .headingone {
+    @apply text-gray-600 cursor-default relative pb-2 text-xl font-semibold mb-4;
+    max-width: max-content;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 6px;
+      width: 40px;
+      @apply bg-secondary-light;
+    }
+  }
+
+  .profiledetails {
+    @apply mt-10;
+    .detail {
+      @apply flex items-center my-3;
+      .key {
+        @apply font-semibold text-sm text-gray-500 block mr-5 cursor-default;
+        min-width: 60px;
+        &::after {
+          content: ":";
+        }
+      }
+      .info {
+        @apply cursor-default;
+
+        & > div {
+          @apply flex items-center flex-wrap;
+          min-height: 50px;
+        }
+        .addresscard {
+          @apply mr-3 my-3 px-2 py-3 rounded-lg border-dashed border-2;
+          max-width: 300px;
+        }
+        .picklocation {
+          @apply font-semibold text-secondary-light underline cursor-pointer;
+        }
+
+        p {
+          @apply text-sm mb-1;
+          max-width: 300px;
+        }
+      }
+    }
+  }
+}

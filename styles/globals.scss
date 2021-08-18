@@ -32,6 +32,23 @@ button {
   &:disabled {
     @apply opacity-25 cursor-not-allowed;
   }
+  &.wider {
+    @apply px-5 pb-3 pt-2;
+  }
+
+  &.bigger {
+    @apply px-6 pb-4 pt-3 text-lg;
+  }
+}
+
+.button-two {
+  @apply text-primary-dark bg-white font-semibold px-3 pb-2 pt-1 rounded transition-all opacity-80 shadow hover:opacity-100 text-center cursor-pointer;
+  &:disabled {
+    @apply opacity-25 cursor-not-allowed;
+  }
+  &.wider {
+    @apply px-5 pb-3 pt-2;
+  }
 }
 
 .formgroup {

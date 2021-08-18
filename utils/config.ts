@@ -1,5 +1,5 @@
 export const NEXT_PUBLIC_GOOGLE_MAPS_API =
-  "AIzaSyDt4Bnz3n7SErEtHwRso5prUZKIxIYPvos";
+  "AIzaSyBh9u9zMsqgUdDMDRrruqANMpRWvB5E-TE";
 
 export const URLS = {
   // partner_url: "http://localhost:4000/",

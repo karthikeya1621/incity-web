@@ -5,18 +5,40 @@ import { useInView } from "react-intersection-observer";
 import AppContext from "../context/AppContext";
 import styles from "../styles/Home.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay } from "swiper";
 import { URLS } from "../utils/config";
 import Link from "next/link";
 import slugify from "slugify";
+
+SwiperCore.use([Autoplay]);
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
   const { ref, inView } = useInView();
   const { setIsHeaderSearchVisible, categories } = useContext(AppContext);
+  const [slides, setSlides] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchSlides();
+  }, []);
 
   useEffect(() => {
     setIsHeaderSearchVisible(!inView);
   }, [inView]);
+
+  const fetchSlides = async () => {
+    try {
+      const response = await fetch(
+        `https://pochieshomeservices.com/RestApi/api/Homeslider/homesliderList?key=incitykey!`
+      );
+      const result = await response.json();
+      if (result.data.length >= 0) {
+        setSlides(result.data);
+      }
+    } catch (err) {
+      console.log("Slides Load Error", err);
+    }
+  };
 
   return (
     <div id="main">
@@ -26,13 +48,37 @@ export default function Home() {
       </Head>
       <div ref={ref} className={styles.herobanner}>
         <div className={styles.img}>
-          <Image
-            layout="fill"
-            objectFit="cover"
-            alt=""
-            src="/images/hero-banner.jpeg"
-            loader={URLS.getImageLoader()}
-          />
+          {slides.length == 0 ? (
+            <Image
+              layout="fill"
+              objectFit="cover"
+              alt=""
+              src="/images/hero-banner.jpeg"
+            />
+          ) : (
+            <>
+              <Swiper slidesPerView={1} loop={true} autoplay={true}>
+                {slides.map((slide: any) => (
+                  <SwiperSlide key={`slide-${slide.id}`}>
+                    <div
+                      style={{
+                        height: "480px",
+                        width: "100%",
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        layout="fill"
+                        objectFit="cover"
+                        alt=""
+                        src={slide.slider_image}
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </>
+          )}
         </div>
         <div className={styles.dummy}></div>
         <div className="mx-auto max-w-screen-lg">
@@ -70,7 +116,10 @@ export default function Home() {
                               width={48}
                               height={48}
                               objectFit="contain"
-                              src="https://img.icons8.com/nolan/64/plumbing.png"
+                              src={
+                                category.Iconurl ||
+                                "https://img.icons8.com/nolan/64/plumbing.png"
+                              }
                               alt=""
                             />
                           </div>

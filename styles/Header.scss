@@ -78,6 +78,13 @@
 
       &.cart {
         @apply text-2xl;
+
+        h6 {
+          @apply py-1 text-white text-center font-semibold bg-secondary rounded-full absolute text-xs;
+          right: 6px;
+          width: 24px;
+          bottom: 15px;
+        }
       }
 
       &.login {
@@ -131,5 +138,33 @@
         }
       }
     }
+  }
+}
+
+.videointro {
+  @apply fixed left-0 top-0 bg-white flex justify-center items-center cursor-default transition-all;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  pointer-events: none;
+  video {
+    @apply pointer-events-none;
+    width: 300px;
+    height: auto;
+  }
+  &.done {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.idle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.started {
+    opacity: 1;
+    pointer-events: all;
   }
 }

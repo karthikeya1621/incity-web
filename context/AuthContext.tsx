@@ -9,9 +9,9 @@ const AuthContext = createContext<any>({});
 export const AuthProvider = (props: any) => {
   const auth = useAuth();
   const router = useRouter();
-  const { setIsLoginPopupVisible } = useContext(AppContext);
+  const { setIsLoginPopupVisible, userData, setUserData } =
+    useContext(AppContext);
   const { data: user } = useUser();
-  const [userData, setUserData] = useState<any>(null);
   const [recaptchaVerfied, setRecaptchaVerified] = useState(false);
   const [otpConfirmResult, setOtpConfirmResult] =
     useState<firebase.auth.ConfirmationResult | null>(null);
@@ -83,7 +83,7 @@ export const AuthProvider = (props: any) => {
   ) => {
     try {
       const response = await fetch(
-        `https://pochieshomeservices.com/RestApi/api/auth/user?key=incitykey!&email=${email}&phonenumber=${phoneNumber}`
+        `https://admin.incity-services.com/RestApi/api/auth/user?key=incitykey!&email=${email}&phonenumber=${phoneNumber}`
       );
       const result = await response.json();
       console.log(result);
@@ -99,13 +99,13 @@ export const AuthProvider = (props: any) => {
     <AuthContext.Provider
       value={{
         user,
-        userData,
         recaptchaVerfied,
         loginWithGoogle,
         loginWithOtp,
         confirmOtpCode,
         otpConfirmResult,
         logout,
+        getUserData,
       }}
     >
       {props.children}

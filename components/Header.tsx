@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useRouter } from "next/dist/client/router";
 import PopupOverlay from "./PopupOverlay";
 import LoginPopup from "./LoginPopup";
@@ -8,6 +8,7 @@ import AppContext from "../context/AppContext";
 import AuthContext from "../context/AuthContext";
 import Image from "next/image";
 import { URLS } from "../utils/config";
+import AddressSelectionPopup from "./AddressSelectionPopup";
 
 function Header() {
   const router = useRouter();
@@ -16,14 +17,27 @@ function Header() {
     setIsLoginPopupVisible,
     isCityPopupVisible,
     setIsCityPopupVisible,
+    isAddressPopupVisible,
+    setIsAddressPopupVisible,
     selectedCity,
     isHeaderSearchVisible,
+    cartCount,
+    setIsIntroDone,
+    isIntroDone,
+    userData,
   } = useContext(AppContext);
   const { user, logout } = useContext(AuthContext);
+  const videoElem = useRef(null);
 
   const handleLoginButton = () => {
     setIsLoginPopupVisible(true);
   };
+
+  useEffect(() => {
+    if (isIntroDone == "false" && videoElem.current) {
+      (videoElem.current as HTMLVideoElement).play();
+    }
+  }, [isIntroDone, videoElem]);
 
   return (
     <>
@@ -62,9 +76,12 @@ function Header() {
           </div>
           <div className="col-span-5 h-full flex items-center justify-end">
             <div className="navmenu">
-              <div className="menuitem">
+              <div className="menuitem" style={{ display: "none" }}>
                 <span>Services</span>
                 <div className="submenu"></div>
+              </div>
+              <div className="menuitem">
+                <span>About Us</span>
               </div>
               <div className="menuitem">
                 <Link href={URLS.partner_url} passHref>
@@ -82,20 +99,41 @@ function Header() {
               )}
               {user && (
                 <>
-                  <div className="actionitem cart">
-                    <span className="mdi mdi-cart-outline"></span>
-                  </div>
+                  {cartCount ? (
+                    <Link href="/checkout" passHref>
+                      <a>
+                        <div className="actionitem cart">
+                          <span className="mdi mdi-cart-outline"></span>
+                          {cartCount && <h6>{cartCount}</h6>}
+                        </div>
+                      </a>
+                    </Link>
+                  ) : (
+                    <div className="actionitem cart">
+                      <span className="mdi mdi-cart-outline"></span>
+                    </div>
+                  )}
                   <div className="actionitem profile">
                     <span className="mdi mdi-account-circle-outline"></span>{" "}
                     Account
                     <div className="dropdown">
                       <ul>
-                        <li className="font-semibold text-sm cursor-default my-3">
-                          {user.displayName || user.phoneNumber}
+                        <li className="font-semibold text-sm text-center cursor-default my-3">
+                          {(userData && userData.name) ||
+                            user.displayName.split(" ")[0] ||
+                            user.phoneNumber}
                         </li>
                         <li className="border-b border-gray-300 my-3"></li>
-                        <li>Bookings</li>
-                        <li>Profile</li>
+                        <li>
+                          <Link href="/bookings" passHref>
+                            <a>Bookings</a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href="/profile" passHref>
+                            <a>Profile</a>
+                          </Link>
+                        </li>
                         <li className="text-red-500" onClick={logout}>
                           Logout
                         </li>
@@ -126,6 +164,32 @@ function Header() {
       >
         <LoginPopup />
       </PopupOverlay>
+      <PopupOverlay
+        visible={isAddressPopupVisible}
+        onClose={() => {
+          setIsAddressPopupVisible(false);
+        }}
+      >
+        <AddressSelectionPopup />
+      </PopupOverlay>
+
+      <div
+        className={`videointro ${isIntroDone == "true" ? "done" : ""} ${
+          isIntroDone == undefined ? "idle" : ""
+        } ${isIntroDone == "false" ? "started" : ""}`}
+      >
+        <video
+          ref={videoElem}
+          onEnded={() => {
+            console.log("Intro Played");
+            setIsIntroDone("true");
+            sessionStorage.setItem("isintrodone", "true");
+          }}
+          muted
+        >
+          <source src="/videos/intro.mp4"></source>
+        </video>
+      </div>
     </>
   );
 }

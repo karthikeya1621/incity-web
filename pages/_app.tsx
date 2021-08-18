@@ -9,14 +9,16 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AppProvider } from "../context/AppContext";
 import Head from "next/head";
+import "react-accessible-accordion/dist/fancy-example.css";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDt4Bnz3n7SErEtHwRso5prUZKIxIYPvos",
-  authDomain: "pochies-pwa.firebaseapp.com",
-  projectId: "pochies-pwa",
-  storageBucket: "pochies-pwa.appspot.com",
-  messagingSenderId: "1045004357474",
-  appId: "1:1045004357474:web:b225a89d16fcf1c8f4e63b",
+  apiKey: "AIzaSyCa1zXrfN5PAmAp3naT39uusq4C_YFJ2nM",
+  authDomain: "incity-41669.firebaseapp.com",
+  projectId: "incity-41669",
+  storageBucket: "incity-41669.appspot.com",
+  messagingSenderId: "778633385133",
+  appId: "1:778633385133:web:dfae233f2fcdb20949e224",
+  measurementId: "G-NWQ30ER095",
 };
 
 function MyApp({ Component, pageProps }: AppProps) {

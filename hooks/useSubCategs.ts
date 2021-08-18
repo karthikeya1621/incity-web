@@ -12,11 +12,13 @@ export const useSubCategs = (categoryId: string) => {
   const fetchSubCategs = async () => {
     try {
       const response = await fetch(
-        `https://pochieshomeservices.com/RestApi/api/subCategory/subcategoryList?key=incitykey!&cat_id=${categoryId}`
+        `https://admin.incity-services.com/RestApi/api/subCategory/subcategoryList?key=incitykey!&cat_id=${categoryId}`
       );
       const result = await response.json();
       if (result.data && result.data.length) {
         setSubCategs(result.data);
+      } else {
+        setSubCategs([]);
       }
     } catch (err) {
       console.log("Fetch SubCategories Error", err);

@@ -1,16 +1,24 @@
 import { useRouter } from "next/dist/client/router";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { NEXT_PUBLIC_GOOGLE_MAPS_API } from "../utils/config";
 import { useCities, useProviders } from "../hooks";
+import AuthContext from "./AuthContext";
 
 const AppContext = createContext<any>({});
 
 export const AppProvider = (props: any) => {
+  const [userData, setUserData] = useState<any>(null);
+  const [cartData, setCartData] = useState<any[]>([]);
+  const [cartCount, setCartCount] = useState(0);
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
-  const [isCityPopupVisible, setIsCityPopupVisible] = useState(true);
+  const [isCityPopupVisible, setIsCityPopupVisible] = useState(false);
+  const [isAddressPopupVisible, setIsAddressPopupVisible] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [isHeaderSearchVisible, setIsHeaderSearchVisible] = useState(true);
+  const [isFirstVisit, setIsFirstVisit] = useState<any>(undefined);
+  const [isIntroDone, setIsIntroDone] = useState<any>(undefined);
   const { providers, categories, allCategories } = useProviders({
     city: selectedCity,
   });
@@ -20,13 +28,38 @@ export const AppProvider = (props: any) => {
   const { cities } = useCities();
 
   useEffect(() => {
-    // getCurrentLocation();
+    const isvisited = localStorage.getItem("isvisited");
+    if (isvisited == "true") {
+      setIsFirstVisit("false");
+    } else {
+      setIsFirstVisit("true");
+      localStorage.setItem("isvisited", "true");
+    }
+
+    const isintrodone = sessionStorage.getItem("isintrodone");
+    if (isintrodone == "true") {
+      setIsIntroDone("true");
+    } else if (!isintrodone) {
+      setIsIntroDone("false");
+    } else {
+      setIsIntroDone(undefined);
+    }
+
+    if (localStorage.getItem("selectedcity")) {
+      setIsCityPopupVisible(false);
+      setSelectedCity(localStorage.getItem("selectedcity"));
+    } else {
+      setIsCityPopupVisible(true);
+    }
+    getCurrentLocation();
   }, []);
 
   useEffect(() => {
     if (document.body) {
       document.body.style.overflowY =
-        isLoginPopupVisible || isCityPopupVisible ? "hidden" : "auto";
+        isLoginPopupVisible || isCityPopupVisible || isAddressPopupVisible
+          ? "hidden"
+          : "auto";
     }
   }, [isLoginPopupVisible, isCityPopupVisible]);
 
@@ -53,6 +86,42 @@ export const AppProvider = (props: any) => {
     console.log(data);
   };
 
+  const getCart = async () => {
+    if (userData && userData.user_id) {
+      try {
+        const response = await fetch(
+          `https://admin.incity-services.com/RestApi/api/cart/cartList?key=incitykey!&user_id=${userData.user_id}`
+        );
+        const result = await response.json();
+        if (result.data) {
+          setCartData(
+            result.data.length
+              ? result.data.filter((ci: any) => parseInt(ci.iQuantity))
+              : []
+          );
+        } else {
+          setCartData([]);
+        }
+      } catch (err) {
+        console.log("Get Cart Error", err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getCart();
+  }, [userData]);
+
+  useEffect(() => {
+    if (cartData.length) {
+      const cartItems = cartData
+        .map((cd) => parseInt(cd.iQuantity))
+        .reduce((total: number, num: number) => total + num, 0);
+      setCartCount(cartItems);
+      console.log(cartData);
+    }
+  }, [cartData]);
+
   return (
     <AppContext.Provider
       value={{
@@ -60,6 +129,8 @@ export const AppProvider = (props: any) => {
         setIsLoginPopupVisible,
         isCityPopupVisible,
         setIsCityPopupVisible,
+        isAddressPopupVisible,
+        setIsAddressPopupVisible,
         selectedCity,
         setSelectedCity,
         isHeaderSearchVisible,
@@ -67,6 +138,16 @@ export const AppProvider = (props: any) => {
         providers,
         categories,
         allCategories,
+        getCart,
+        userData,
+        setUserData,
+        cartData,
+        cartCount,
+        currentLocation,
+        selectedAddress,
+        setSelectedAddress,
+        setIsIntroDone,
+        isIntroDone,
       }}
     >
       {props.children}

@@ -8,6 +8,8 @@
     content: "";
     @apply absolute top-0 left-0 w-full bg-gray-900 opacity-60 transition-opacity;
     height: 480px;
+    z-index: 4;
+    pointer-events: none;
   }
 
   & > .img {
@@ -18,6 +20,7 @@
   .searchbox {
     @apply relative w-full my-4 flex flex-col justify-center items-center;
     height: 300px;
+    z-index: 5;
 
     .searchbar {
       @apply relative mb-2;
@@ -38,6 +41,7 @@
 
   .servicesbox {
     @apply relative w-full my-4 flex justify-center;
+    z-index: 5;
 
     .servicescard {
       @apply bg-white shadow-md rounded-md px-3 py-2 w-full flex flex-wrap justify-between;

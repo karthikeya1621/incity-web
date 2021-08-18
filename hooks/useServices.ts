@@ -12,7 +12,7 @@ export const useServices = (subsubcatid: string) => {
   const fetchServices = async () => {
     try {
       const response = await fetch(
-        `https://pochieshomeservices.com/RestApi/api/services/serviceList?key=incitykey!&sub_sub_cat_id=${subsubcatid}`
+        `https://admin.incity-services.com/RestApi/api/services/serviceList?key=incitykey!&sub_sub_cat_id=${subsubcatid}`
       );
       const result = await response.json();
 

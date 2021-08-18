@@ -12,6 +12,7 @@ const CitySelectionPopup = () => {
   const selectCity = (city: string) => {
     if (city) {
       setSelectedCity(city);
+      localStorage.setItem("selectedcity", city);
       setIsCityPopupVisible(false);
     }
   };
