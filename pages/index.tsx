@@ -15,8 +15,10 @@ SwiperCore.use([Autoplay]);
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
   const { ref, inView } = useInView();
-  const { setIsHeaderSearchVisible, categories } = useContext(AppContext);
+  const { setIsHeaderSearchVisible, categories, breakpoints } =
+    useContext(AppContext);
   const [slides, setSlides] = useState<any[]>([]);
+  const [catsPerRow, setCatsPerRow] = useState(6);
 
   useEffect(() => {
     fetchSlides();
@@ -25,6 +27,15 @@ export default function Home() {
   useEffect(() => {
     setIsHeaderSearchVisible(!inView);
   }, [inView]);
+
+  useEffect(() => {
+    if (breakpoints.xs || breakpoints.sm) {
+      setCatsPerRow(3);
+    } else {
+      setCatsPerRow(6);
+    }
+    console.log(breakpoints);
+  }, [breakpoints]);
 
   const fetchSlides = async () => {
     try {
@@ -60,13 +71,7 @@ export default function Home() {
               <Swiper slidesPerView={1} loop={true} autoplay={true}>
                 {slides.map((slide: any) => (
                   <SwiperSlide key={`slide-${slide.id}`}>
-                    <div
-                      style={{
-                        height: "480px",
-                        width: "100%",
-                        position: "relative",
-                      }}
-                    >
+                    <div className={styles.imgslide}>
                       <Image
                         layout="fill"
                         objectFit="cover"
@@ -101,7 +106,8 @@ export default function Home() {
                     className={`${styles.servicescard} ${
                       isExpanded && styles.servicescard_expand
                     } ${
-                      categories.length <= 6 && styles.servicescard_minified
+                      categories.length <= catsPerRow &&
+                      styles.servicescard_minified
                     }`}
                   >
                     {(categories as any[]).map((category, index) => (
@@ -113,9 +119,9 @@ export default function Home() {
                         <a key={`cat${index + 1}`} className={styles.service}>
                           <div className={styles.serviceimg}>
                             <Image
-                              width={48}
-                              height={48}
                               objectFit="contain"
+                              width={catsPerRow == 3 ? 32 : 48}
+                              height={catsPerRow == 3 ? 32 : 48}
                               src={
                                 category.Iconurl ||
                                 "https://img.icons8.com/nolan/64/plumbing.png"
@@ -127,7 +133,7 @@ export default function Home() {
                         </a>
                       </Link>
                     ))}
-                    {categories.length % 6 > 0 && (
+                    {categories.length % catsPerRow > 0 && (
                       <div className="ml-auto"></div>
                     )}
                     {categories.length > 12 && (
@@ -155,7 +161,10 @@ export default function Home() {
       <div className={styles.dealscontainer}>
         <h2>Best Deals</h2>
         <div className={styles.sliderone}>
-          <Swiper spaceBetween={12} slidesPerView={4}>
+          <Swiper
+            spaceBetween={breakpoints.xs || breakpoints.sm ? 4 : 12}
+            slidesPerView={breakpoints.xs || breakpoints.sm ? 1.2 : 4}
+          >
             <SwiperSlide>
               <div className={styles.dealbox}>
                 <div className={styles.dealcard}>
@@ -262,24 +271,24 @@ export default function Home() {
       {/* Contact Us */}
       <div className={styles.contactuscontainer}>
         <div className="grid grid-cols-2 gap-2 w-full max-w-screen-lg mx-auto">
-          <div className="col-span-1 flex justify-start">
+          <div className="col-span-2 md:col-span-1 flex justify-center md:justify-start">
             <div className={styles.locationmap}>
               <h2>Our Location</h2>
               <div className={styles.mapbox}></div>
             </div>
           </div>
-          <div className="col-span-1 flex justify-end">
+          <div className="col-span-2 md:col-span-1 flex justify-center md:justify-end">
             <div className={styles.contactusform}>
               <h2>Contact Us</h2>
               <form>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="col-span-1">
+                  <div className="col-span-2 md:col-span-1">
                     <div className="formgroup">
                       <label>Email</label>
                       <input className="form-input" type="email" />
                     </div>
                   </div>
-                  <div className="col-span-1">
+                  <div className="col-span-2 md:col-span-1">
                     <div className="formgroup">
                       <label>Name</label>
                       <input className="form-input" type="text" />

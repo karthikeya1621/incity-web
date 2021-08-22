@@ -71,6 +71,7 @@ export const AuthProvider = (props: any) => {
   const logout = async () => {
     try {
       await auth.signOut();
+      setUserData(null);
       router.replace("/");
     } catch (err) {
       console.log("Sign out Error", err);

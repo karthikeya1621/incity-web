@@ -8,8 +8,8 @@ const Footer = () => {
 
   return (
     <footer className={styles.footer}>
-      <div className="grid grid-cols-4 gap-4 w-full max-w-screen-lg mx-auto">
-        <div className="col-span-1">
+      <div className="grid grid-cols-4 md:gap-4 gap-0 w-full max-w-screen-lg mx-auto">
+        <div className="md:col-span-1 col-span-4 px-4 md:px-0 mb-6">
           <h4>Contact Us</h4>
           <div className={styles.contactitem}>
             <span className="mdi mdi-cellphone"></span>
@@ -41,7 +41,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="col-span-3 pl-6">
+        <div className="md:col-span-3 md:pl-6 col-span-4 px-4">
           <h4>Our Services</h4>
           <div className={styles.serviceslist}>
             {categories.map((category: any) => (

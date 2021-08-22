@@ -25,6 +25,8 @@ function Header() {
     setIsIntroDone,
     isIntroDone,
     userData,
+    isBottomMenuVisible,
+    breakpoints,
   } = useContext(AppContext);
   const { user, logout } = useContext(AuthContext);
   const videoElem = useRef(null);
@@ -42,8 +44,8 @@ function Header() {
   return (
     <>
       <div className="header">
-        <div className="w-full max-w-screen-lg grid grid-cols-12 gap-1 h-full mx-auto">
-          <div className="col-span-2 h-full flex items-center">
+        <div className="w-full max-w-screen-lg grid grid-cols-12 gap-1 h-full mx-auto px-2 md:px-0">
+          <div className="col-span-3 md:col-span-2 h-full flex items-center">
             <Link href="/">
               <div className="logo">
                 <Image
@@ -56,7 +58,7 @@ function Header() {
               </div>
             </Link>
           </div>
-          <div className="col-span-5 h-full flex items-center justify-center">
+          <div className="col-span-6 md:col-span-5 h-full flex items-center justify-center">
             <div className="searchbox">
               <div
                 className="citylocation"
@@ -67,29 +69,35 @@ function Header() {
               </div>
               {((router.route == "/" && isHeaderSearchVisible) ||
                 router.route != "/") && (
-                <div className="searchbar">
-                  <input type="text" placeholder="Search a service" />
-                  <span className="mdi mdi-magnify"></span>
-                </div>
+                <>
+                  <div className={`searchbar`}>
+                    <input type="text" placeholder="Search a service" />
+                    <span className="mdi mdi-magnify"></span>
+                  </div>
+                </>
               )}
             </div>
           </div>
-          <div className="col-span-5 h-full flex items-center justify-end">
+          <div className="col-span-3 md:col-span-5 h-full flex items-center justify-end">
             <div className="navmenu">
-              <div className="menuitem" style={{ display: "none" }}>
-                <span>Services</span>
-                <div className="submenu"></div>
-              </div>
-              <div className="menuitem">
-                <span>About Us</span>
-              </div>
-              <div className="menuitem">
-                <Link href={URLS.partner_url} passHref>
-                  <a target="_blank">
-                    <span>Partner</span>
-                  </a>
-                </Link>
-              </div>
+              {!(breakpoints.xs || breakpoints.sm) && (
+                <>
+                  <div className="menuitem" style={{ display: "none" }}>
+                    <span>Services</span>
+                    <div className="submenu"></div>
+                  </div>
+                  <div className="menuitem">
+                    <span>About Us</span>
+                  </div>
+                  <div className="menuitem">
+                    <Link href={URLS.partner_url} passHref>
+                      <a target="_blank">
+                        <span>Partner</span>
+                      </a>
+                    </Link>
+                  </div>
+                </>
+              )}
               {!user && (
                 <div className="actionitem login">
                   <button onClick={handleLoginButton} className="button-one">
@@ -113,33 +121,35 @@ function Header() {
                       <span className="mdi mdi-cart-outline"></span>
                     </div>
                   )}
-                  <div className="actionitem profile">
-                    <span className="mdi mdi-account-circle-outline"></span>{" "}
-                    Account
-                    <div className="dropdown">
-                      <ul>
-                        <li className="font-semibold text-sm text-center cursor-default my-3">
-                          {(userData && userData.name) ||
-                            user.displayName.split(" ")[0] ||
-                            user.phoneNumber}
-                        </li>
-                        <li className="border-b border-gray-300 my-3"></li>
-                        <li>
-                          <Link href="/bookings" passHref>
-                            <a>Bookings</a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/profile" passHref>
-                            <a>Profile</a>
-                          </Link>
-                        </li>
-                        <li className="text-red-500" onClick={logout}>
-                          Logout
-                        </li>
-                      </ul>
+                  {!breakpoints.xs && !breakpoints.sm && (
+                    <div className="actionitem profile">
+                      <span className="mdi mdi-account-circle-outline"></span>{" "}
+                      Account
+                      <div className="dropdown">
+                        <ul>
+                          <li className="font-semibold text-sm text-center cursor-default my-3">
+                            {(userData && userData.name) ||
+                              user.displayName.split(" ")[0] ||
+                              user.phoneNumber}
+                          </li>
+                          <li className="border-b border-gray-300 my-3"></li>
+                          <li>
+                            <Link href="/bookings" passHref>
+                              <a>Bookings</a>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/profile" passHref>
+                              <a>Profile</a>
+                            </Link>
+                          </li>
+                          <li className="text-red-500" onClick={logout}>
+                            Logout
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </>
               )}
             </div>
@@ -190,6 +200,58 @@ function Header() {
           <source src="/videos/intro.mp4"></source>
         </video>
       </div>
+      {isBottomMenuVisible && (breakpoints.xs || breakpoints.sm) && (
+        <div className="bottommenucontainer">
+          <div className="bottommenu">
+            <div
+              onClick={() => {
+                router.push("/");
+              }}
+              className={`bmenuitem ${router.pathname == "/" && "active"}`}
+            >
+              <span className="mdi mdi-home-variant-outline"></span>
+              <h6>Home</h6>
+            </div>
+            <div
+              onClick={() => {
+                router.push("/bookings");
+              }}
+              className={`bmenuitem ${
+                router.pathname == "/bookings" && "active"
+              }`}
+            >
+              <span className="mdi mdi-book-outline"></span>
+              <h6>Bookings</h6>
+            </div>
+            <div
+              onClick={() => {
+                router.push("/wallet");
+              }}
+              className={`bmenuitem ${
+                router.pathname == "/wallet" && "active"
+              }`}
+            >
+              <span className="mdi mdi-wallet-outline"></span>
+              <h6>Wallet</h6>
+            </div>
+            <div
+              onClick={() => {
+                if (user) {
+                  router.push("/profile");
+                } else {
+                  handleLoginButton();
+                }
+              }}
+              className={`bmenuitem ${
+                router.pathname == "/profile" && "active"
+              }`}
+            >
+              <span className="mdi mdi-account-outline"></span>
+              <h6>Profile</h6>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

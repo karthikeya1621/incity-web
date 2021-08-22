@@ -3,10 +3,17 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { NEXT_PUBLIC_GOOGLE_MAPS_API } from "../utils/config";
 import { useCities, useProviders } from "../hooks";
 import AuthContext from "./AuthContext";
+import { useBreakpoints } from "react-breakpoints-hook";
 
 const AppContext = createContext<any>({});
 
 export const AppProvider = (props: any) => {
+  const breakpoints = useBreakpoints({
+    xs: { min: 0, max: 360 },
+    sm: { min: 361, max: 960 },
+    md: { min: 961, max: 1400 },
+    lg: { min: 1401, max: null },
+  });
   const [userData, setUserData] = useState<any>(null);
   const [cartData, setCartData] = useState<any[]>([]);
   const [cartCount, setCartCount] = useState(0);
@@ -17,6 +24,7 @@ export const AppProvider = (props: any) => {
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [isHeaderSearchVisible, setIsHeaderSearchVisible] = useState(true);
+  const [isBottomMenuVisible, setIsBottomMenuVisible] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState<any>(undefined);
   const [isIntroDone, setIsIntroDone] = useState<any>(undefined);
   const { providers, categories, allCategories } = useProviders({
@@ -148,6 +156,9 @@ export const AppProvider = (props: any) => {
         setSelectedAddress,
         setIsIntroDone,
         isIntroDone,
+        breakpoints,
+        isBottomMenuVisible,
+        setIsBottomMenuVisible,
       }}
     >
       {props.children}

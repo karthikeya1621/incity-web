@@ -232,12 +232,7 @@ const ServiceDetailsPage = (props: any) => {
             />
             <div className={styles.categorydetails}>
               <h1>{categoryData?.category}</h1>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
-                nostrum error non rem quo exercitationem totam hic quam dicta
-                assumenda officiis incidunt, magnam cum quas obcaecati deserunt
-                quos eum ea!
-              </p>
+              <p>{categoryData?.descriptions}</p>
             </div>
           </div>
         </div>
@@ -286,7 +281,7 @@ const ServiceDetailsPage = (props: any) => {
                 </div>
               </div>
             </div>
-            <div className="col-span-7">
+            <div className="col-span-12 md:col-span-7">
               <div className={styles.serviceslist}>
                 {services.map((service: any, key) => (
                   <div key={`service-${key}`} className={styles.servicecard}>
@@ -389,7 +384,7 @@ const ServiceDetailsPage = (props: any) => {
               </div>
             </div>
 
-            <div className="col-span-5">
+            <div className="col-span-12 md:col-span-5">
               <div className={styles.accordioncontainer}>
                 {mounted && (
                   <Accordion allowZeroExpanded={true}>

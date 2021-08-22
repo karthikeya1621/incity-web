@@ -2,24 +2,30 @@
 
 .herobanner {
   @apply w-full relative pb-3;
-  min-height: 600px;
+  min-height: 400px;
 
   & .dummy::after {
     content: "";
     @apply absolute top-0 left-0 w-full bg-gray-900 opacity-60 transition-opacity;
-    height: 480px;
+    height: 240px;
     z-index: 4;
     pointer-events: none;
   }
 
   & > .img {
     @apply absolute w-full;
-    height: 480px;
+    height: 240px;
+
+    .imgslide {
+      height: 240px;
+      width: 100%;
+      position: relative;
+    }
   }
 
   .searchbox {
     @apply relative w-full my-4 flex flex-col justify-center items-center;
-    height: 300px;
+    height: 200px;
     z-index: 5;
 
     .searchbar {
@@ -45,21 +51,22 @@
 
     .servicescard {
       @apply bg-white shadow-md rounded-md px-3 py-2 w-full flex flex-wrap justify-between;
-      min-height: 300px;
-      max-height: 300px;
+      min-height: 200px;
+      max-height: 200px;
       transition: max-height 0.75s ease-in-out;
       overflow: hidden;
 
       .service {
-        @apply cursor-pointer p-2 my-4 mx-4 flex flex-col items-center;
-        height: 100px;
-        width: 120px;
+        @apply cursor-pointer p-2 m-2 md:m-4 flex flex-col items-center;
+        height: 80px;
+        width: 90px;
         .serviceimg {
-          height: 48px;
-          width: 48px;
+          @apply relative;
+          height: 32px;
+          width: 32px;
         }
         span {
-          @apply mt-2 text-sm font-semibold text-gray-600 text-center;
+          @apply mt-2 text-xs font-semibold text-gray-600 text-center;
           max-width: 120px;
         }
 
@@ -71,6 +78,26 @@
       .expandbtn {
         @apply absolute mx-auto left-0 right-0 bg-white rounded-full px-3 py-1 shadow-lg ring-1 ring-primary-light;
         bottom: -25px;
+      }
+    }
+
+    @screen md {
+      .servicescard {
+        min-height: 300px;
+        max-height: 300px;
+        .service {
+          width: 100px;
+          height: 120px;
+
+          .serviceimg {
+            width: 48px;
+            height: 48px;
+          }
+
+          span {
+            @apply text-sm;
+          }
+        }
       }
     }
 
@@ -86,6 +113,30 @@
 
   &:focus-within .dummy::after {
     @apply opacity-80;
+  }
+
+  @screen md {
+    & .dummy::after {
+      height: 480px;
+    }
+
+    & > .img {
+      height: 480px;
+
+      .imgslide {
+        height: 480px;
+      }
+    }
+
+    .searchbox {
+      height: 300px;
+    }
+  }
+}
+
+@screen md {
+  .herobanner {
+    min-height: 600px;
   }
 }
 
@@ -147,8 +198,8 @@
   @apply bg-gray-200 py-6;
 
   h2 {
-    @apply font-bold text-gray-600 cursor-default relative pb-3;
-    max-width: max-content;
+    @apply font-bold text-gray-600 cursor-default relative pb-3 text-center mx-auto;
+    max-width: fit-content;
     font-size: 1.5em;
     margin-top: 2em;
     margin-bottom: 1em;
@@ -173,5 +224,19 @@
     }
   }
   .contactusform {
+    @apply w-full;
+    max-width: 300px;
+  }
+
+  @screen md {
+    h2 {
+      @apply text-left;
+      max-width: max-content;
+    }
+
+    .contactusform {
+      @apply w-auto;
+      max-width: unset;
+    }
   }
 }

@@ -1,7 +1,7 @@
 @import "./variables.scss";
 
 .profilepage {
-  @apply w-full max-w-screen-lg mx-auto relative my-16;
+  @apply w-full max-w-screen-lg mx-auto relative my-16 px-3 md:px-0;
   min-height: 500px;
   .headingone {
     @apply text-gray-600 cursor-default relative pb-2 text-xl font-semibold mb-4;

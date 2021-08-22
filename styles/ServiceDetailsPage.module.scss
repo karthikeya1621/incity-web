@@ -6,13 +6,13 @@
 
   .servicebanner {
     @apply relative w-full max-w-screen-lg mx-auto mt-6 mb-1 rounded overflow-hidden;
-    height: 400px;
+    height: 200px;
 
     .categorydetails {
       @apply absolute w-full bottom-0 px-3 py-2 bg-secondary bg-opacity-90 text-white;
 
       h1 {
-        @apply text-4xl font-extrabold mb-2;
+        @apply text-2xl font-extrabold mb-2;
       }
 
       p {
@@ -47,21 +47,22 @@
       @apply relative w-full bg-white transition-all;
 
       &.subsubcatsholder_fixed {
-        @apply fixed shadow-md rounded-lg z-10 px-2 py-2 mt-1 mx-auto left-0 right-0 max-w-screen-xl;
+        @apply fixed shadow-md rounded-none z-10 px-2 py-2 mt-0 bg-gray-100 mx-auto left-0 right-0 max-w-screen-xl;
         top: $headerHeight;
         width: auto;
         .subsubcats {
-          @apply m-auto justify-center;
+          @apply m-auto justify-start;
         }
       }
     }
   }
 
   .subsubcats {
-    @apply flex flex-wrap mb-8;
+    @apply flex mb-8;
+    max-width: 100%;
+    overflow-x: auto;
     .subsubcat {
       @apply block my-2 mx-1 py-2 px-3 border-2 border-gray-800 rounded cursor-pointer hover:bg-gray-100 text-sm capitalize;
-      overflow-x: hidden;
       text-overflow: ellipsis;
       white-space: pre;
     }
@@ -72,9 +73,9 @@
   }
 
   .serviceslist {
-    @apply px-1;
+    @apply px-3;
     .servicecard {
-      @apply flex flex-wrap mb-12;
+      @apply flex flex-wrap py-5 border-b mt-1;
       .serviceimg {
         @apply relative rounded mr-3 mb-3;
         width: 110px;
@@ -97,6 +98,7 @@
 
     .serviceinfo {
       @apply prose;
+      max-width: 24ch;
       h4 {
         @apply text-gray-700 w-full;
       }
@@ -111,9 +113,76 @@
     }
 
     .servicedetails {
-      @apply w-full prose;
+      @apply w-full prose-sm;
 
       p {
+        ul {
+          @apply pl-3;
+        }
+        li {
+          @apply pl-0;
+          list-style-type: disc;
+        }
+      }
+    }
+  }
+
+  .accordioncontainer {
+    @apply prose-sm;
+  }
+}
+
+@screen md {
+  .servicedetailspage {
+    .servicebanner {
+      height: 400px;
+
+      .categorydetails {
+        h1 {
+          @apply text-4xl;
+        }
+      }
+    }
+
+    .servicecontent {
+      .subsubcatsholder {
+        &.subsubcatsholder_fixed {
+          @apply rounded-lg mt-1 bg-white;
+          .subsubcats {
+            @apply justify-center;
+          }
+        }
+      }
+    }
+
+    .subsubcats {
+      @apply flex-wrap;
+      max-width: unset;
+      overflow-x: unset;
+
+      .subsubcat {
+        overflow-x: hidden;
+      }
+    }
+
+    .serviceslist {
+      @apply px-1;
+
+      .serviceinfo {
+        max-width: unset;
+      }
+
+      .servicedetails {
+        @apply prose;
+
+        p {
+          ul {
+            @apply pl-0;
+          }
+          li {
+            list-style-type: unset;
+          }
+        }
       }
     }
   }

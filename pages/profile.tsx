@@ -10,7 +10,7 @@ const ProfilePage = () => {
     setIsAddressPopupVisible,
     setSelectedAddress,
   } = useContext(AppContext);
-  const { user, getUserData } = useContext(AuthContext);
+  const { user, getUserData, logout } = useContext(AuthContext);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const ProfilePage = () => {
     <div className={styles.profilepage}>
       <h3 className={styles.headingone}>Profile Information</h3>
 
-      {userData && (
+      {user && userData && (
         <div className={styles.profiledetails}>
           {userData.name || user.displayName ? (
             <div className={styles.detail}>
@@ -110,6 +110,12 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="w-full text-center mt-20 mb-3">
+            <strong onClick={logout} className="text-red-500 cursor-pointer">
+              Logout
+            </strong>
           </div>
         </div>
       )}

@@ -35,6 +35,7 @@ const CheckoutPage = () => {
     getCart,
     setIsAddressPopupVisible,
     selectedAddress,
+    breakpoints,
   } = useContext(AppContext);
   const router = useRouter();
 
@@ -257,8 +258,11 @@ const CheckoutPage = () => {
   return (
     <div className={styles.checkoutpage}>
       <div className="w-full mx-auto max-w-screen-lg">
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-5">
+        <div className="grid grid-cols-12 gap-4 md:p-0 px-3 py-6">
+          <div
+            className="col-span-12 md:col-span-5"
+            style={{ order: breakpoints.xs || breakpoints.sm ? 1 : "unset" }}
+          >
             <div className={styles.slotpicker}>
               <h3 className={styles.headingone}>Pick a time</h3>
               <div className="flex flex-wrap justify-start">
@@ -380,8 +384,10 @@ const CheckoutPage = () => {
               </button>
             </div>
           </div>
-          <div className="col-span-2"></div>
-          <div className="col-span-5">
+          {!(breakpoints.xs || breakpoints.sm) && (
+            <div className="col-span-2"></div>
+          )}
+          <div className="col-span-12 md:col-span-5">
             <div className={styles.cartitems}>
               <h3 className={styles.headingone}>Your Cart</h3>
               <div className="pt-3">

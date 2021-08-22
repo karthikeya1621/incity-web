@@ -31,7 +31,7 @@ export const useOrders = ({ user_id, order_id, payment_id }: any) => {
             sub_amounts: order.sub_amounts.split(", "),
           };
         });
-        setOrders(orders || []);
+        setOrders([...orders].reverse() || []);
       }
     } catch (err) {
       console.log("Fetch Orders Error", err);

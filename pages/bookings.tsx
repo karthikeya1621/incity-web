@@ -14,8 +14,8 @@ const BookingsPage = () => {
     <div className={styles.bookingspage}>
       <h3 className={styles.headingone}>Bookings</h3>
       <div className={styles.bookings}>
-        {orders.map((order: any) => (
-          <div key={order.id} className={styles.booking}>
+        {orders.map((order: any, oi) => (
+          <div key={order.id + "-" + oi} className={styles.booking}>
             <div className={styles.orderinfo}>
               <div className={styles.status}>{order.progress}</div>
               <div>
