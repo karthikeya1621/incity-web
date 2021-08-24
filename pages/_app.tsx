@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { AppProvider } from "../context/AppContext";
 import Head from "next/head";
 import "react-accessible-accordion/dist/fancy-example.css";
+import dynamic from "next/dynamic";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCa1zXrfN5PAmAp3naT39uusq4C_YFJ2nM",
@@ -40,4 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     </FirebaseAppProvider>
   );
 }
-export default MyApp;
+
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+});

@@ -68,6 +68,7 @@ export const useProviders = ({ city }: { city?: string }) => {
       }
     } catch (err) {
       console.log("Fetch Providers Error", err);
+      setAllProviders([]);
     }
   };
 
