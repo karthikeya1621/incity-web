@@ -307,7 +307,23 @@ export default function Home() {
           <div className="col-span-2 md:col-span-1 flex justify-center md:justify-start">
             <div className={styles.locationmap}>
               <h2>Our Location</h2>
-              <div className={styles.mapbox}></div>
+              <div className={styles.mapbox}>
+                <div className={styles.mapimg}>
+                  <Image
+                    layout="fill"
+                    objectFit="cover"
+                    src="/images/staticmap.png"
+                  />
+                </div>
+                <div className={styles.markerimg}>
+                  <Image
+                    width={24}
+                    height={32}
+                    objectFit="contain"
+                    src="/images/marker.png"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-span-2 md:col-span-1 flex justify-center md:justify-end">

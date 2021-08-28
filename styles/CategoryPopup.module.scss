@@ -1,23 +1,28 @@
 @import "./variables.scss";
 
 .categorypopup {
-  @apply bg-white rounded-lg shadow-lg px-6 flex items-center;
+  @apply bg-white rounded-lg shadow-lg px-3 md:px-6 flex items-center;
+  max-width: 320px;
 
   .categlist {
     @apply flex flex-wrap py-3;
+    max-width: 460px;
 
     .service {
-      @apply cursor-pointer p-2 m-2 md:m-4 flex flex-col items-center;
+      @apply cursor-pointer p-2 mx-2 my-3 md:m-4 flex flex-col items-center;
       height: 80px;
-      width: 90px;
+      width: 80px;
       .serviceimg {
         @apply relative mt-2;
         height: 32px;
         width: 32px;
       }
       span {
-        @apply mt-2 text-xs font-semibold text-gray-600 text-center capitalize;
-        max-width: 120px;
+        @apply mt-2 text-xs font-semibold text-gray-600 text-center capitalize inline-block;
+        max-width: 85px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &:hover span {
@@ -38,8 +43,19 @@
 
         span {
           @apply text-sm;
+          max-width: 120px;
         }
       }
+    }
+  }
+}
+
+@screen md {
+  .categorypopup {
+    max-width: unset;
+
+    .categlist {
+      max-width: 610px;
     }
   }
 }
