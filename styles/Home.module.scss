@@ -66,7 +66,7 @@
           width: 32px;
         }
         span {
-          @apply mt-2 text-xs font-semibold text-gray-600 text-center;
+          @apply mt-2 text-xs font-semibold text-gray-600 text-center capitalize;
           max-width: 120px;
         }
 
@@ -86,7 +86,7 @@
         min-height: 300px;
         max-height: 300px;
         .service {
-          width: 100px;
+          width: 120px;
           height: 120px;
 
           .serviceimg {

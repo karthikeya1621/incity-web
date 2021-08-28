@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import slugify from "slugify";
 
 export const useProviders = ({ city }: { city?: string }) => {
+  const categoriesFilter = "none";
   const [providers, setProviders] = useState<any[]>([]);
   const [allProviders, setAllProviders] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -25,29 +26,47 @@ export const useProviders = ({ city }: { city?: string }) => {
   useEffect(() => {
     if (providers.length) {
       const categs: any[] = [];
-      providers.forEach((provider, index) => {
-        const newCategory = allCategories.filter(
-          (c) =>
-            c.id + "" === provider.category_id + "" &&
-            provider.category.trim().length &&
-            slugify(c.category.trim()) === slugify(provider.category.trim())
-        );
-        const categoryExists = categs.some(
-          (c) =>
-            c.id + "" === provider.category_id + "" &&
-            provider.category.trim().length &&
-            slugify(c.category.trim()) === slugify(provider.category.trim())
-        );
-        if (!categoryExists && provider.category.trim().length) {
-          categs.push({
-            category: provider.category.trim(),
-            id: provider.category_id + "",
-            link: slugify(provider.category),
-            Iconurl:
-              newCategory && newCategory.length ? newCategory[0].Iconurl : "",
-          });
-        }
-      });
+      if (categoriesFilter != "none") {
+        providers.forEach((provider, index) => {
+          const newCategory = allCategories.filter(
+            (c) =>
+              c.id + "" === provider.category_id + "" &&
+              provider.category.trim().length &&
+              slugify(c.category.trim()) === slugify(provider.category.trim())
+          );
+          const categoryExists = categs.some(
+            (c) =>
+              c.id + "" === provider.category_id + "" &&
+              provider.category.trim().length &&
+              slugify(c.category.trim()) === slugify(provider.category.trim())
+          );
+          if (!categoryExists && provider.category.trim().length) {
+            categs.push({
+              category: provider.category.trim(),
+              id: provider.category_id + "",
+              link: slugify(provider.category),
+              Iconurl:
+                newCategory && newCategory.length ? newCategory[0].Iconurl : "",
+            });
+          }
+        });
+      } else {
+        allCategories.forEach((cat, ind) => {
+          const parName = cat.parent_name.trim();
+          if (categs.filter((c) => c.category == parName).length == 0) {
+            categs.push({
+              category: parName.length ? parName : cat.category,
+              id: cat.id,
+              link: slugify(cat.category),
+              Iconurl:
+                (parName.toLowerCase() == "home appliances"
+                  ? "/images/home-appliances.jpeg"
+                  : null) || cat.Iconurl,
+              isParent: parName.toLowerCase() != cat.category.toLowerCase(),
+            });
+          }
+        });
+      }
       console.log(categs);
       setCategories(categs.filter((c) => c.Iconurl.length > 0));
     }

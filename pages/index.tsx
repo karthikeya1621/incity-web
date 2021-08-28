@@ -15,8 +15,12 @@ SwiperCore.use([Autoplay]);
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
   const { ref, inView } = useInView();
-  const { setIsHeaderSearchVisible, categories, breakpoints } =
-    useContext(AppContext);
+  const {
+    setIsHeaderSearchVisible,
+    categories,
+    breakpoints,
+    setCategoryPopupParent,
+  } = useContext(AppContext);
   const [slides, setSlides] = useState<any[]>([]);
   const [catsPerRow, setCatsPerRow] = useState(6);
 
@@ -111,27 +115,56 @@ export default function Home() {
                     }`}
                   >
                     {(categories as any[]).map((category, index) => (
-                      <Link
-                        href={`/category/${slugify(category.category)}`}
-                        passHref
-                        key={`cat${index + 1}`}
-                      >
-                        <a key={`cat${index + 1}`} className={styles.service}>
-                          <div className={styles.serviceimg}>
-                            <Image
-                              objectFit="contain"
-                              width={catsPerRow == 3 ? 32 : 48}
-                              height={catsPerRow == 3 ? 32 : 48}
-                              src={
-                                category.Iconurl ||
-                                "https://img.icons8.com/nolan/64/plumbing.png"
-                              }
-                              alt=""
-                            />
+                      <>
+                        {!category.isParent ? (
+                          <Link
+                            href={`/category/${slugify(category.category)}`}
+                            passHref
+                            key={`cat${index + 1}`}
+                          >
+                            <a
+                              key={`cat${index + 1}`}
+                              className={styles.service}
+                            >
+                              <div className={styles.serviceimg}>
+                                <Image
+                                  objectFit="contain"
+                                  width={catsPerRow == 3 ? 32 : 48}
+                                  height={catsPerRow == 3 ? 32 : 48}
+                                  src={
+                                    category.Iconurl ||
+                                    "https://img.icons8.com/nolan/64/plumbing.png"
+                                  }
+                                  alt=""
+                                />
+                              </div>
+                              <span>{category.category.toLowerCase()}</span>
+                            </a>
+                          </Link>
+                        ) : (
+                          <div
+                            key={`cat${index + 1}`}
+                            className={styles.service}
+                            onClick={() => {
+                              setCategoryPopupParent(category.category);
+                            }}
+                          >
+                            <div className={styles.serviceimg}>
+                              <Image
+                                objectFit="contain"
+                                width={catsPerRow == 3 ? 32 : 48}
+                                height={catsPerRow == 3 ? 32 : 48}
+                                src={
+                                  category.Iconurl ||
+                                  "https://img.icons8.com/nolan/64/plumbing.png"
+                                }
+                                alt=""
+                              />
+                            </div>
+                            <span>{category.category.toLowerCase()}</span>
                           </div>
-                          <span>{category.category}</span>
-                        </a>
-                      </Link>
+                        )}
+                      </>
                     ))}
                     {categories.length % catsPerRow > 0 && (
                       <div className="ml-auto"></div>

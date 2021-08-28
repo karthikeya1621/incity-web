@@ -46,6 +46,7 @@ const ServiceDetailsPage = (props: any) => {
     getCart,
     userData,
     cartData,
+    setCategoryPopupParent,
   } = useContext(AppContext);
   const [holderHeight, setHolderHeight] = useState(90);
 
@@ -73,6 +74,7 @@ const ServiceDetailsPage = (props: any) => {
   }, [subsubcatholder, subSubCategs]);
 
   useEffect(() => {
+    setCategoryPopupParent("");
     setMounted(true);
   }, []);
 

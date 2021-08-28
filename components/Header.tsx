@@ -9,6 +9,7 @@ import AuthContext from "../context/AuthContext";
 import Image from "next/image";
 import { URLS } from "../utils/config";
 import AddressSelectionPopup from "./AddressSelectionPopup";
+import CategoryPopup from "./CategoryPopup";
 
 function Header() {
   const router = useRouter();
@@ -27,6 +28,8 @@ function Header() {
     userData,
     isBottomMenuVisible,
     breakpoints,
+    categoryPopupParent,
+    setCategoryPopupParent,
   } = useContext(AppContext);
   const { user, logout } = useContext(AuthContext);
   const videoElem = useRef(null);
@@ -181,6 +184,14 @@ function Header() {
         }}
       >
         <AddressSelectionPopup />
+      </PopupOverlay>
+      <PopupOverlay
+        visible={categoryPopupParent.length != ""}
+        onClose={() => {
+          setCategoryPopupParent("");
+        }}
+      >
+        <CategoryPopup />
       </PopupOverlay>
 
       <div

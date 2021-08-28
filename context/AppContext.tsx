@@ -20,6 +20,7 @@ export const AppProvider = (props: any) => {
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isCityPopupVisible, setIsCityPopupVisible] = useState(false);
   const [isAddressPopupVisible, setIsAddressPopupVisible] = useState(false);
+  const [categoryPopupParent, setCategoryPopupParent] = useState("");
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
@@ -159,6 +160,8 @@ export const AppProvider = (props: any) => {
         breakpoints,
         isBottomMenuVisible,
         setIsBottomMenuVisible,
+        categoryPopupParent,
+        setCategoryPopupParent,
       }}
     >
       {props.children}
