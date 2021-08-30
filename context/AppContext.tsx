@@ -78,7 +78,9 @@ export const AppProvider = (props: any) => {
     if (router.query.view && router.query.view == "content") {
       setIsHeaderVisible(false);
       setIsFooterVisible(false);
-      if (document.body) document.body.style.overflowY = "auto";
+      setTimeout(() => {
+        if (document.body) document.body.style.overflowY = "auto";
+      }, 2000);
     } else {
       setIsHeaderVisible(true);
       setIsFooterVisible(true);
