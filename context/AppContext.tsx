@@ -28,6 +28,8 @@ export const AppProvider = (props: any) => {
   const [isBottomMenuVisible, setIsBottomMenuVisible] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState<any>(undefined);
   const [isIntroDone, setIsIntroDone] = useState<any>(undefined);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(true);
   const { providers, categories, allCategories } = useProviders({
     city: selectedCity,
   });
@@ -71,6 +73,16 @@ export const AppProvider = (props: any) => {
           : "auto";
     }
   }, [isLoginPopupVisible, isCityPopupVisible]);
+
+  useEffect(() => {
+    if (router.query.view && router.query.view == "content") {
+      setIsHeaderVisible(false);
+      setIsFooterVisible(false);
+    } else {
+      setIsHeaderVisible(true);
+      setIsFooterVisible(true);
+    }
+  }, [router.query]);
 
   const getCurrentLocation = () => {
     if (!currentLocation) {
@@ -162,6 +174,8 @@ export const AppProvider = (props: any) => {
         setIsBottomMenuVisible,
         categoryPopupParent,
         setCategoryPopupParent,
+        isHeaderVisible,
+        isFooterVisible,
       }}
     >
       {props.children}

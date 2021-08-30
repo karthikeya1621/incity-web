@@ -12,7 +12,7 @@ const CategoryPopup = () => {
     <div className={styles.categorypopup}>
       <div className={styles.categlist}>
         {allCategories.map((category: any, index: number) => (
-          <>
+          <React.Fragment key={`cat${index + 1}`}>
             {category.category.toLowerCase() !=
               category.parent_name.toLowerCase() &&
             category.parent_name.trim() == categoryPopupParent ? (
@@ -40,7 +40,7 @@ const CategoryPopup = () => {
             ) : (
               <></>
             )}
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

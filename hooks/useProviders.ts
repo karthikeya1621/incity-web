@@ -24,7 +24,7 @@ export const useProviders = ({ city }: { city?: string }) => {
   }, [allProviders]);
 
   useEffect(() => {
-    if (providers.length) {
+    if (providers.length || categoriesFilter == "none") {
       const categs: any[] = [];
       if (categoriesFilter != "none") {
         providers.forEach((provider, index) => {

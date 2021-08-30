@@ -38,7 +38,6 @@ export default function Home() {
     } else {
       setCatsPerRow(6);
     }
-    console.log(breakpoints);
   }, [breakpoints]);
 
   const fetchSlides = async () => {
