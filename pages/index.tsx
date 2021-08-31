@@ -114,7 +114,7 @@ export default function Home() {
                     }`}
                   >
                     {(categories as any[]).map((category, index) => (
-                      <>
+                      <React.Fragment key={`cat-${index}`}>
                         {!category.isParent ? (
                           <Link
                             href={`/category/${slugify(category.category)}`}
@@ -163,7 +163,7 @@ export default function Home() {
                             <span>{category.category.toLowerCase()}</span>
                           </div>
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                     {categories.length % catsPerRow > 0 && (
                       <div className="ml-auto"></div>

@@ -13,13 +13,12 @@ import "react-accessible-accordion/dist/fancy-example.css";
 import dynamic from "next/dynamic";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCa1zXrfN5PAmAp3naT39uusq4C_YFJ2nM",
-  authDomain: "incity-41669.firebaseapp.com",
-  projectId: "incity-41669",
-  storageBucket: "incity-41669.appspot.com",
-  messagingSenderId: "778633385133",
-  appId: "1:778633385133:web:dfae233f2fcdb20949e224",
-  measurementId: "G-NWQ30ER095",
+  apiKey: "AIzaSyAbCp7GIXh-pKPqTMIrcOnhpCMVqGb2tuQ",
+  authDomain: "incity-web-322713.firebaseapp.com",
+  projectId: "incity-web-322713",
+  storageBucket: "incity-web-322713.appspot.com",
+  messagingSenderId: "221427008834",
+  appId: "1:221427008834:web:db4ed887e4589386e5f4db",
 };
 
 function MyApp({ Component, pageProps }: AppProps) {

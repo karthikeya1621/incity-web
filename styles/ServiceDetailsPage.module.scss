@@ -43,8 +43,26 @@
   .servicecontent {
     @apply py-4;
 
+    .subcatsholder {
+      @apply flex flex-nowrap pl-3 overflow-x-auto relative my-2;
+      max-width: 100%;
+
+      & > .subcatitem {
+        @apply px-2 py-3 border-2 border-gray-400 text-sm rounded ml-1 mr-5 my-1 cursor-pointer font-semibold text-center;
+        min-width: 100px;
+
+        input {
+          pointer-events: none;
+        }
+      }
+
+      & > .subcatitem_active {
+        @apply border-secondary-light cursor-default;
+      }
+    }
+
     .subsubcatsholder {
-      @apply relative w-full bg-white transition-all;
+      @apply relative w-full bg-white transition-all pl-3;
 
       &.subsubcatsholder_fixed {
         @apply fixed shadow-md rounded-none z-10 px-2 py-2 mt-0 bg-gray-100 mx-auto left-0 right-0 max-w-screen-xl;
@@ -145,6 +163,16 @@
     }
 
     .servicecontent {
+      .subcatsholder {
+        @apply flex-wrap;
+        overflow-x: unset;
+        max-width: unset;
+
+        .subcatitem {
+          @apply text-base;
+        }
+      }
+
       .subsubcatsholder {
         &.subsubcatsholder_fixed {
           @apply rounded-lg mt-1 bg-white;

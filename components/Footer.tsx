@@ -63,6 +63,37 @@ const Footer = () => {
                 ))}
               </div>
             </div>
+
+            <div className="col-span-4 flex text-gray-400 justify-between pt-3 border-t border-gray-600">
+              <div className="text-xs">
+                <Link href="/terms-conditions" passHref>
+                  <a className="mr-3">Terms and Conditions</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="https://www.facebook.com/incityservices" passHref>
+                  <a className="mr-3">
+                    <span className="mdi mdi-facebook"></span>
+                  </a>
+                </Link>
+                <Link
+                  href="https://youtube.com/channel/UCY1WcTGic290U7AC0ft_URg"
+                  passHref
+                >
+                  <a className="mr-3">
+                    <span className="mdi mdi-youtube"></span>
+                  </a>
+                </Link>
+                <Link
+                  href="https://www.linkedin.com/in/incity-services-3ba973211"
+                  passHref
+                >
+                  <a className="mr-3">
+                    <span className="mdi mdi-linkedin"></span>
+                  </a>
+                </Link>
+              </div>
+            </div>
           </div>
         </footer>
       )}

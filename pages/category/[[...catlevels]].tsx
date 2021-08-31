@@ -2,17 +2,11 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import styles from "../../styles/ServiceDetailsPage.module.scss";
 import slugify from "slugify";
 import AppContext from "../../context/AppContext";
-import {
-  useProviders,
-  useServices,
-  useSubCategs,
-  useSubSubCategs,
-} from "../../hooks";
+import { useServices, useSubSubCategs } from "../../hooks";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ReactTooltip from "react-tooltip";
-import AuthContext from "../../context/AuthContext";
 import {
   Accordion,
   AccordionItem,
@@ -22,22 +16,21 @@ import {
 } from "react-accessible-accordion";
 import { useInView } from "react-intersection-observer";
 import Rating from "react-rating";
-import ReactDOM from "react-dom";
 
 const ServiceDetailsPage = (props: any) => {
   const router = useRouter();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ rootMargin: "50px" });
   const [isTabsFixed, setIsTabsFixed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [prevLink, setPrevLink] = useState("");
   const [nextLink, setNextLink] = useState("");
-  const [category, subsubcategory]: any = router.query.catlevels || [
-    null,
-    null,
-  ];
+  const [category, subcategory, subsubcategory]: any = router.query
+    .catlevels || [null, "", null];
   const [serviceExists, setServiceExists] = useState(true);
   const [categoryData, setCategoryData] = useState<any>(null);
   const [subSubCategoryData, setSubSubCategoryData] = useState<any>(null);
+  const [subCatList, setSubCatList] = useState<any[]>([]);
+  const [selectedSubCat, setSelectedSubCat] = useState(subcategory);
   const {
     providers,
     selectedCity,
@@ -62,10 +55,8 @@ const ServiceDetailsPage = (props: any) => {
   useEffect(() => {
     if (subsubcatholder && subsubcatholder.current) {
       var element = subsubcatholder.current;
-      console.log(element);
       setTimeout(() => {
         const clientHeight = (element as any).getBoundingClientRect().height;
-        console.log(clientHeight);
         if (clientHeight > 90) {
           setHolderHeight(clientHeight || 90);
         }
@@ -102,50 +93,51 @@ const ServiceDetailsPage = (props: any) => {
       if (subsubcategory) {
         subsubcategorydata = subSubCategs.filter(
           (subsubcateg: any) =>
-            slugify(subsubcateg.category_sub_sub_name.trim()) === subsubcategory
+            slugify(subsubcateg.category_sub_sub_name.trim()) ===
+              subsubcategory &&
+            slugify(subsubcateg.cat_name_sub.trim()) === selectedSubCat.trim()
         )[0];
       } else {
         subsubcategorydata = subSubCategs[0];
       }
+
+      const scList: any[] = subCatList || [];
+      subSubCategs.forEach((ssc, ind) => {
+        if (
+          scList.filter((sc) => ssc.cat_name_sub.trim() == sc.name.trim())
+            .length == 0
+        ) {
+          scList.push({
+            name: ssc.cat_name_sub,
+            subsubcatname: ssc.category_sub_sub_name,
+            active: false,
+          });
+        }
+      });
+      setSubCatList([...scList]);
+
       if (subsubcategorydata) {
         setSubSubCategoryData(subsubcategorydata);
-
-        subSubCategs.forEach((ssc, ind) => {
-          if (ssc.id === subsubcategorydata.id) {
-            if (ind > 0 && ind < subSubCategs.length - 1) {
-              subSubCategs[ind - 1] &&
-                setPrevLink(
-                  slugify(subSubCategs[ind - 1].category_sub_sub_name.trim())
-                );
-              subSubCategs[ind + 1] &&
-                setNextLink(
-                  slugify(subSubCategs[ind + 1].category_sub_sub_name.trim())
-                );
-            } else if (ind > 0) {
-              subSubCategs[ind - 1] &&
-                setPrevLink(
-                  slugify(subSubCategs[ind - 1].category_sub_sub_name.trim())
-                );
-              setNextLink("");
-            } else {
-              setPrevLink("");
-              subSubCategs[ind + 1] &&
-                setNextLink(
-                  slugify(subSubCategs[ind + 1].category_sub_sub_name.trim())
-                );
-            }
-          }
-        });
       } else {
         setSubSubCategoryData(null);
         setServiceExists(false);
       }
     }
-  }, [subSubCategs, subsubcategory]);
+  }, [subSubCategs, subsubcategory, selectedSubCat]);
 
   useEffect(() => {
-    console.log(prevLink, nextLink);
-  }, [prevLink]);
+    if (
+      subCatList.length > 0 &&
+      subCatList.filter((sc) => sc.active).length == 0
+    ) {
+      const subCatBySlug = subCatList.filter(
+        (sc) => slugify(sc.name) == subcategory
+      );
+      selectSubCat(subCatBySlug.length > 0 ? subCatBySlug[0] : subCatList[0]);
+    } else if (subCatList.length > 0) {
+      setSelectedSubCat(slugify(subCatList.filter((sc) => sc.active)[0].name));
+    }
+  }, [subCatList]);
 
   const handleAddToCart = async (service: any) => {
     const existingData = (cartData as any[]).filter(
@@ -219,6 +211,21 @@ const ServiceDetailsPage = (props: any) => {
     }
   };
 
+  const selectSubCat = (subcat: any) => {
+    const subcats = subCatList.map((sc: any) => {
+      if (subcat.name == sc.name) {
+        return { name: sc.name, active: true, subsubcatname: sc.subsubcatname };
+      }
+      return { name: sc.name, active: false, subsubcatname: sc.subsubcatname };
+    });
+    setSubCatList(subcats);
+    if (slugify(subcat.name) !== subcategory) {
+      router.push(
+        `${category}/${slugify(subcat.name)}/${slugify(subcat.subsubcatname)}`
+      );
+    }
+  };
+
   return (
     <div className={styles.servicedetailspage}>
       {mounted && <ReactTooltip effect="solid" />}
@@ -242,6 +249,26 @@ const ServiceDetailsPage = (props: any) => {
       <div className="w-full max-w-screen-lg mx-auto">
         <div className={styles.servicecontent}>
           <div className="grid grid-cols-12 gap-1">
+            <div className="col-span-12 relative">
+              <div className={styles.subcatsholder}>
+                {subCatList.map((sc: any, sci) => (
+                  <div
+                    onClick={() => {
+                      if (!sc.active) {
+                        selectSubCat(sc);
+                      }
+                    }}
+                    key={`sc-${sci}`}
+                    className={`${styles.subcatitem} ${
+                      sc.active ? styles.subcatitem_active : ""
+                    }`}
+                  >
+                    <input type="radio" readOnly={true} checked={sc.active} />{" "}
+                    {sc.name}
+                  </div>
+                ))}
+              </div>
+            </div>
             <div
               className="col-span-12 relative"
               ref={subsubcatholder}
@@ -258,27 +285,37 @@ const ServiceDetailsPage = (props: any) => {
               >
                 <div className={styles.subsubcats}>
                   {mounted &&
-                    subSubCategs.map((subsubcateg) => (
-                      <Link
-                        href={`/category/${slugify(
-                          categoryData.category
-                        )}/${slugify(subsubcateg.category_sub_sub_name)}`}
-                        key={`subsubcat-${subsubcateg.id}`}
-                        passHref={true}
-                        scroll={false}
-                      >
-                        <a
-                          key={`subsubcat-${subsubcateg.id}`}
-                          data-tip={subsubcateg.category_sub_sub_name}
-                          className={
-                            subsubcateg.id != subSubCategoryData?.id
-                              ? `${styles.subsubcat}`
-                              : `${styles.subsubcat} ${styles.subsubcat_active}`
-                          }
-                        >
-                          {subsubcateg.category_sub_sub_name}
-                        </a>
-                      </Link>
+                    subSubCategs.map((subsubcateg, ssci) => (
+                      <React.Fragment key={`sc-${ssci}`}>
+                        {subCatList.filter((sc) => sc.active).length &&
+                        subCatList.filter((sc) => sc.active)[0].name ==
+                          subsubcateg.cat_name_sub ? (
+                          <Link
+                            href={`/category/${slugify(
+                              categoryData.category
+                            )}/${selectedSubCat}/${slugify(
+                              subsubcateg.category_sub_sub_name
+                            )}`}
+                            key={`subsubcat-${subsubcateg.id}`}
+                            passHref={true}
+                            scroll={false}
+                          >
+                            <a
+                              key={`subsubcat-${subsubcateg.id}`}
+                              data-tip={subsubcateg.category_sub_sub_name}
+                              className={
+                                subsubcateg.id != subSubCategoryData?.id
+                                  ? `${styles.subsubcat}`
+                                  : `${styles.subsubcat} ${styles.subsubcat_active}`
+                              }
+                            >
+                              {subsubcateg.category_sub_sub_name}
+                            </a>
+                          </Link>
+                        ) : (
+                          <></>
+                        )}
+                      </React.Fragment>
                     ))}
                 </div>
               </div>

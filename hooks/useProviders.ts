@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import slugify from "slugify";
+import { URLS } from "../utils/config";
 
 export const useProviders = ({ city }: { city?: string }) => {
   const categoriesFilter = "none";
@@ -59,8 +60,8 @@ export const useProviders = ({ city }: { city?: string }) => {
               id: cat.id,
               link: slugify(cat.category),
               Iconurl:
-                (parName.toLowerCase() == "home appliances"
-                  ? "/images/home-appliances.jpeg"
+                (parName.toLowerCase() != cat.category.toLowerCase()
+                  ? `${URLS.icons_url}/${cat.par_img}`
                   : null) || cat.Iconurl,
               isParent: parName.toLowerCase() != cat.category.toLowerCase(),
             });

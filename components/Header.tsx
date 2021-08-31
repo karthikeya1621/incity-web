@@ -93,7 +93,11 @@ function Header() {
                         <div className="submenu"></div>
                       </div>
                       <div className="menuitem">
-                        <span>About Us</span>
+                        <Link href="/about" passHref>
+                          <a>
+                            <span>About Us</span>
+                          </a>
+                        </Link>
                       </div>
                       <div className="menuitem">
                         <Link href={URLS.partner_url} passHref>

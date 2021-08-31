@@ -6,6 +6,7 @@ export const URLS = {
   // base_url: "http://localhost:3000/",
   partner_url: "https://partner.incityservice.com/",
   base_url: "https://incityservice.com/",
+  icons_url: "https://admin.incity-services.com//assets/img/service/icons/",
   getImageLoader: function () {
     return undefined;
     const context = this;
