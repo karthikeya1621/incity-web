@@ -25,7 +25,7 @@
   .serviceslist {
     @apply flex flex-col flex-wrap;
     .hreflink {
-      @apply relative block;
+      @apply relative block capitalize cursor-pointer;
       margin-bottom: 8px;
 
       & > span {

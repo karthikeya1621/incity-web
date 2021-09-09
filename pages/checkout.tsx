@@ -36,6 +36,7 @@ const CheckoutPage = () => {
     setIsAddressPopupVisible,
     selectedAddress,
     breakpoints,
+    deleteCartItem,
   } = useContext(AppContext);
   const router = useRouter();
 
@@ -95,6 +96,10 @@ const CheckoutPage = () => {
 
   const handleUpdateQuantity = async (cartitem: any, modifier: number) => {
     const quantity = parseInt(cartitem.iQuantity) || 0;
+    if (quantity + modifier === 0) {
+      await deleteCartItem(parseInt(cartitem.iCartId));
+      return;
+    }
     try {
       const response = await fetch(
         `https://admin.incity-services.com/RestApi/api/cart/cartInsert`,
@@ -408,22 +413,33 @@ const CheckoutPage = () => {
                             &#x20b9; {cartitem.fPrice}
                           </span>
                         </div>
-                        <div className={styles.counter}>
-                          <button
+                        <div className="flex justify-between">
+                          <div className={styles.counter}>
+                            <button
+                              onClick={() => {
+                                handleUpdateQuantity(cartitem, -1);
+                              }}
+                            >
+                              -
+                            </button>
+                            <span>{cartitem.iQuantity}</span>
+                            <button
+                              onClick={() => {
+                                handleUpdateQuantity(cartitem, 1);
+                              }}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div
                             onClick={() => {
-                              handleUpdateQuantity(cartitem, -1);
+                              deleteCartItem(parseInt(cartitem.iCartId));
                             }}
+                            className=" text-red-500 cursor-pointer "
                           >
-                            -
-                          </button>
-                          <span>{cartitem.iQuantity}</span>
-                          <button
-                            onClick={() => {
-                              handleUpdateQuantity(cartitem, 1);
-                            }}
-                          >
-                            +
-                          </button>
+                            <span className="mdi mdi-delete-outline text-xl"></span>{" "}
+                            Delete
+                          </div>
                         </div>
                       </div>
                       <div className="flex justify-center items-center text-lg text-secondary-light font-bold">

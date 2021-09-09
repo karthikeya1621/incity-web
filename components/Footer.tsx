@@ -1,10 +1,12 @@
 import Link from "next/link";
 import React, { useContext } from "react";
+import slugify from "slugify";
 import AppContext from "../context/AppContext";
 import styles from "../styles/Footer.module.scss";
 
 const Footer = () => {
-  const { categories, isFooterVisible } = useContext(AppContext);
+  const { categories, isFooterVisible, setCategoryPopupParent } =
+    useContext(AppContext);
 
   return (
     <>
@@ -24,14 +26,23 @@ const Footer = () => {
               <div className={styles.contactitem}>
                 <span className="mdi mdi-map-marker-outline"></span>
                 <div>
-                  <h6>Hyderabad,Telangana</h6>
+                  <h6>
+                    <a
+                      href="https://www.google.com/maps/place/17%C2%B028'16.5%22N+78%C2%B030'34.1%22E/@17.4712667,78.507291,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d17.4712616!4d78.5094797"
+                      target="_blank"
+                    >
+                      Hyderabad,Telangana
+                    </a>
+                  </h6>
                 </div>
               </div>
 
               <div className={styles.contactitem}>
                 <span className="mdi mdi-email-outline"></span>
                 <div>
-                  <h6>info@incity.in</h6>
+                  <h6>
+                    <a href="mailto:info@incity.in">info@incity.in</a>
+                  </h6>
                 </div>
               </div>
 
@@ -47,19 +58,38 @@ const Footer = () => {
               <h4>Our Services</h4>
               <div className={styles.serviceslist}>
                 {categories.map((category: any) => (
-                  <Link
-                    key={`footer-cat-${category.id}`}
-                    passHref={true}
-                    href={`/category/${category.link}`}
-                  >
-                    <a
-                      key={`footer-cat-${category.id}`}
-                      className={styles.hreflink}
-                    >
-                      <span className="mdi mdi-chevron-left"></span>
-                      <h6>{category.category}</h6>
-                    </a>
-                  </Link>
+                  <React.Fragment key={`footer-cat-${category.id}`}>
+                    {!category.isParent ? (
+                      <Link
+                        key={`footer-cat-${category.id}`}
+                        passHref={true}
+                        href={`/category/${slugify(category.category)}`}
+                      >
+                        <a
+                          key={`footer-cat-${category.id}`}
+                          className={styles.hreflink}
+                        >
+                          <span className="mdi mdi-chevron-left"></span>
+                          <h6>{category.category.toLowerCase()}</h6>
+                        </a>
+                      </Link>
+                    ) : (
+                      <div
+                        key={`footer-cat-${category.id}`}
+                        onClick={() => {
+                          setCategoryPopupParent(category.category);
+                        }}
+                      >
+                        <a
+                          key={`footer-cat-${category.id}`}
+                          className={styles.hreflink}
+                        >
+                          <span className="mdi mdi-chevron-left"></span>
+                          <h6>{category.category.toLowerCase()}</h6>
+                        </a>
+                      </div>
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
             </div>
@@ -68,6 +98,16 @@ const Footer = () => {
               <div className="text-xs">
                 <Link href="/terms-conditions" passHref>
                   <a className="mr-3">Terms and Conditions</a>
+                </Link>
+              </div>
+              <div className="text-xs">
+                <Link href="/privacy-policy" passHref>
+                  <a className="mr-3">Privacy Policy</a>
+                </Link>
+              </div>
+              <div className="text-xs">
+                <Link href="/refund-policy" passHref>
+                  <a className="mr-3">Refund Policy</a>
                 </Link>
               </div>
               <div>

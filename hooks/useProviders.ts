@@ -56,7 +56,12 @@ export const useProviders = ({ city }: { city?: string }) => {
           const parName = cat.parent_name.trim();
           if (categs.filter((c) => c.category == parName).length == 0) {
             categs.push({
-              category: parName.length ? parName : cat.category,
+              category: parName.length
+                ? slugify(parName.toLowerCase().trim()) ===
+                  slugify(cat.category.toLowerCase().trim())
+                  ? cat.category
+                  : parName
+                : cat.category,
               id: cat.id,
               link: slugify(cat.category),
               Iconurl:

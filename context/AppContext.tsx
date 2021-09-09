@@ -132,6 +132,31 @@ export const AppProvider = (props: any) => {
     }
   };
 
+  const deleteCartItem = async (cartItemId: number) => {
+    try {
+      const response = await fetch(
+        "https://admin.incity-services.com/RestApi/api/cart/removeItem",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            key: "incitykey!",
+            row_id: cartItemId,
+            user_id: userData.user_id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      if (result.data) {
+        getCart();
+      }
+    } catch (err) {
+      console.log("Delete Cart Item Error", err);
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, [userData]);
@@ -163,6 +188,7 @@ export const AppProvider = (props: any) => {
         categories,
         allCategories,
         getCart,
+        deleteCartItem,
         userData,
         setUserData,
         cartData,

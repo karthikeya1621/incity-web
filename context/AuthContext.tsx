@@ -18,7 +18,7 @@ export const AuthProvider = (props: any) => {
 
   useEffect(() => {
     if (user && (user.email || user.phoneNumber)) {
-      getUserData(user.email, user.phoneNumber?.slice(0, 3));
+      getUserData(user.email, user.phoneNumber?.slice(3));
     } else {
       setUserData(null);
     }

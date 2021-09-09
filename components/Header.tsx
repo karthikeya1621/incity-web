@@ -93,6 +93,13 @@ function Header() {
                         <div className="submenu"></div>
                       </div>
                       <div className="menuitem">
+                        <Link href="/" passHref>
+                          <a>
+                            <span>Home</span>
+                          </a>
+                        </Link>
+                      </div>
+                      <div className="menuitem">
                         <Link href="/about" passHref>
                           <a>
                             <span>About Us</span>
@@ -142,7 +149,9 @@ function Header() {
                             <ul>
                               <li className="font-semibold text-sm text-center cursor-default my-3">
                                 {(userData && userData.name) ||
-                                  user.displayName.split(" ")[0] ||
+                                  (user.displayName
+                                    ? user.displayName.split(" ")[0]
+                                    : user.phoneNumber) ||
                                   user.phoneNumber}
                               </li>
                               <li className="border-b border-gray-300 my-3"></li>

@@ -40,15 +40,18 @@ const ServiceDetailsPage = (props: any) => {
     userData,
     cartData,
     setCategoryPopupParent,
+    deleteCartItem,
   } = useContext(AppContext);
   const [holderHeight, setHolderHeight] = useState(90);
 
-  const { subSubCategs } = useSubSubCategs(
+  const { subSubCategs, subSubCategoriesLoaded } = useSubSubCategs(
     undefined,
     categoryData ? categoryData.id : undefined
   );
   const { services } = useServices(
-    subSubCategoryData ? subSubCategoryData.id : undefined
+    subSubCategoryData ? subSubCategoryData.id : undefined,
+    categoryData ? categoryData.id : undefined,
+    subSubCategoriesLoaded
   );
   const subsubcatholder = useRef(null);
 
@@ -101,7 +104,10 @@ const ServiceDetailsPage = (props: any) => {
         subsubcategorydata = subSubCategs[0];
       }
 
-      const scList: any[] = subCatList || [];
+      let scList: any[] = [];
+      if (subCatList.length && slugify(subCatList[0].catname) == category) {
+        scList = subCatList;
+      }
       subSubCategs.forEach((ssc, ind) => {
         if (
           scList.filter((sc) => ssc.cat_name_sub.trim() == sc.name.trim())
@@ -111,6 +117,7 @@ const ServiceDetailsPage = (props: any) => {
             name: ssc.cat_name_sub,
             subsubcatname: ssc.category_sub_sub_name,
             active: false,
+            catname: ssc.cat_name,
           });
         }
       });
@@ -139,6 +146,29 @@ const ServiceDetailsPage = (props: any) => {
     }
   }, [subCatList]);
 
+  useEffect(() => {
+    if (services.length && !subSubCategs.length) {
+      let scList: any[] = [];
+      if (subCatList.length && slugify(subCatList[0].catname) == category) {
+        scList = subCatList;
+      }
+      services.forEach((serv, ind) => {
+        if (
+          scList.filter((sc) => serv.sub_cat_name.trim() == sc.name.trim())
+            .length == 0
+        ) {
+          scList.push({
+            name: serv.sub_cat_name,
+            subsubcatname: serv.category_sub_sub_name,
+            active: false,
+            catname: serv.cat_name,
+          });
+        }
+      });
+      setSubCatList([...scList]);
+    }
+  }, [services]);
+
   const handleAddToCart = async (service: any) => {
     const existingData = (cartData as any[]).filter(
       (cd) => cd.iServiceId == service.id
@@ -153,14 +183,14 @@ const ServiceDetailsPage = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            service_price: 10,
+            service_price: parseFloat(service.price),
             service_id: service.id,
             service_imgpath: service.Imageurl,
             service_name: service.service_name,
             scategory_id: service.cat_id,
             quantity: quantity + 1,
-            sub_total: 10,
-            total_amount: 10,
+            sub_total: parseFloat(service.price),
+            total_amount: parseFloat(service.price),
             gst: 2,
             user_id: userData.user_id,
             key: "incitykey!",
@@ -180,6 +210,10 @@ const ServiceDetailsPage = (props: any) => {
       (cd) => cd.iServiceId == service.id
     )[0];
     const quantity = existingData ? parseInt(existingData.iQuantity) : 0;
+    if (quantity + modifier === 0) {
+      await deleteCartItem(parseInt(existingData.iCartId));
+      return;
+    }
     try {
       const response = await fetch(
         `https://admin.incity-services.com/RestApi/api/cart/cartInsert`,
@@ -189,14 +223,14 @@ const ServiceDetailsPage = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            service_price: 10,
+            service_price: parseFloat(service.price),
             service_id: service.id,
             service_imgpath: service.Imageurl,
             service_name: service.service_name,
             scategory_id: service.cat_id,
             quantity: quantity + modifier,
-            sub_total: 10,
-            total_amount: 10,
+            sub_total: parseFloat(service.price),
+            total_amount: parseFloat(service.price),
             gst: 2,
             user_id: userData.user_id,
             key: "incitykey!",
@@ -214,14 +248,26 @@ const ServiceDetailsPage = (props: any) => {
   const selectSubCat = (subcat: any) => {
     const subcats = subCatList.map((sc: any) => {
       if (subcat.name == sc.name) {
-        return { name: sc.name, active: true, subsubcatname: sc.subsubcatname };
+        return {
+          name: sc.name,
+          active: true,
+          subsubcatname: sc.subsubcatname,
+          catname: sc.catname,
+        };
       }
-      return { name: sc.name, active: false, subsubcatname: sc.subsubcatname };
+      return {
+        name: sc.name,
+        active: false,
+        subsubcatname: sc.subsubcatname,
+        catname: sc.catname,
+      };
     });
     setSubCatList(subcats);
     if (slugify(subcat.name) !== subcategory) {
       router.push(
-        `${category}/${slugify(subcat.name)}/${slugify(subcat.subsubcatname)}`
+        `${category}/${slugify(subcat.name)}/${
+          subcat.subsubcatname ? slugify(subcat.subsubcatname) : ""
+        }`
       );
     }
   };
@@ -264,7 +310,7 @@ const ServiceDetailsPage = (props: any) => {
                     }`}
                   >
                     <input type="radio" readOnly={true} checked={sc.active} />{" "}
-                    {sc.name}
+                    <span>{sc.name}</span>
                   </div>
                 ))}
               </div>
@@ -322,104 +368,113 @@ const ServiceDetailsPage = (props: any) => {
             </div>
             <div className="col-span-12 md:col-span-7">
               <div className={styles.serviceslist}>
-                {services.map((service: any, key) => (
-                  <div key={`service-${key}`} className={styles.servicecard}>
-                    <div>
-                      <div className={styles.serviceimg}>
-                        <Image
-                          layout="fill"
-                          objectFit="cover"
-                          src={
-                            service.Imageurl
-                              ? service.Imageurl
-                              : "/images/placeholder.gif"
+                {services
+                  .filter(
+                    (service: any) =>
+                      subSubCategs.length > 0 ||
+                      slugify(service.sub_cat_name) == selectedSubCat
+                  )
+                  .map((service: any, key) => (
+                    <div key={`service-${key}`} className={styles.servicecard}>
+                      <div>
+                        <div className={styles.serviceimg}>
+                          <Image
+                            layout="fill"
+                            objectFit="cover"
+                            src={
+                              service.Imageurl
+                                ? service.Imageurl
+                                : "/images/placeholder.gif"
+                            }
+                            placeholder="blur"
+                            blurDataURL="/images/placeholder.gif"
+                          />
+                        </div>
+                        {cartData.filter(
+                          (cd: any) =>
+                            cd.iServiceId == service.id &&
+                            parseInt(cd.iQuantity)
+                        ).length ? (
+                          <div className={styles.counter}>
+                            <button
+                              onClick={() => {
+                                handleUpdateQuantity(service, -1);
+                              }}
+                            >
+                              -
+                            </button>
+                            <span>
+                              {
+                                cartData.filter(
+                                  (cd: any) => cd.iServiceId == service.id
+                                )[0].iQuantity
+                              }
+                            </span>
+                            <button
+                              onClick={() => {
+                                handleUpdateQuantity(service, 1);
+                              }}
+                            >
+                              +
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            className="button-one"
+                            onClick={() => {
+                              if (userData) {
+                                handleAddToCart(service);
+                              } else {
+                                setIsLoginPopupVisible(true);
+                              }
+                            }}
+                          >
+                            Add to Cart
+                          </button>
+                        )}
+                      </div>
+                      <div className={styles.serviceinfo}>
+                        <h4>{service.service_name}</h4>
+                        <div className={styles.priceinfo}>
+                          {service.price && (
+                            <span className={styles.newprice}>
+                              ₹{service.price}
+                            </span>
+                          )}
+                          {service.old_price && (
+                            <span className={styles.oldprice}>
+                              <s>₹{service.old_price}</s>
+                            </span>
+                          )}
+                        </div>
+                        <Rating
+                          readonly
+                          initialRating={service.rate || 0}
+                          start={0}
+                          stop={5}
+                          fullSymbol={
+                            <>
+                              <span className="mdi mdi-star text-yellow-400"></span>
+                            </>
                           }
-                          placeholder="blur"
-                          blurDataURL="/images/placeholder.gif"
+                          emptySymbol={
+                            <>
+                              <span className="mdi mdi-star-outline text-yellow-400"></span>
+                            </>
+                          }
                         />
                       </div>
-                      {cartData.filter(
-                        (cd: any) =>
-                          cd.iServiceId == service.id && parseInt(cd.iQuantity)
-                      ).length ? (
-                        <div className={styles.counter}>
-                          <button
-                            onClick={() => {
-                              handleUpdateQuantity(service, -1);
+                      <div className={styles.servicedetails}>
+                        {mounted && (
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: service.details,
                             }}
-                          >
-                            -
-                          </button>
-                          <span>
-                            {
-                              cartData.filter(
-                                (cd: any) => cd.iServiceId == service.id
-                              )[0].iQuantity
-                            }
-                          </span>
-                          <button
-                            onClick={() => {
-                              handleUpdateQuantity(service, 1);
-                            }}
-                          >
-                            +
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          className="button-one"
-                          onClick={() => {
-                            if (userData) {
-                              handleAddToCart(service);
-                            } else {
-                              setIsLoginPopupVisible(true);
-                            }
-                          }}
-                        >
-                          Add to Cart
-                        </button>
-                      )}
-                    </div>
-                    <div className={styles.serviceinfo}>
-                      <h4>{service.service_name}</h4>
-                      <div className={styles.priceinfo}>
-                        {service.price && (
-                          <span className={styles.newprice}>
-                            ₹{service.price}
-                          </span>
-                        )}
-                        {service.old_price && (
-                          <span className={styles.oldprice}>
-                            <s>₹{service.old_price}</s>
-                          </span>
+                          ></p>
                         )}
                       </div>
-                      <Rating
-                        readonly
-                        initialRating={service.rate || 0}
-                        start={0}
-                        stop={5}
-                        fullSymbol={
-                          <>
-                            <span className="mdi mdi-star text-yellow-400"></span>
-                          </>
-                        }
-                        emptySymbol={
-                          <>
-                            <span className="mdi mdi-star-outline text-yellow-400"></span>
-                          </>
-                        }
-                      />
                     </div>
-                    <div className={styles.servicedetails}>
-                      {mounted && (
-                        <p
-                          dangerouslySetInnerHTML={{ __html: service.details }}
-                        ></p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 

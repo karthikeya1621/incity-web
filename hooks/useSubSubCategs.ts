@@ -5,6 +5,7 @@ export const useSubSubCategs = (
   categoryId?: string
 ) => {
   const [subSubCategs, setSubSubCategs] = useState<any[]>([]);
+  const [subSubCategoriesLoaded, setSubSubCategoriesLoaded] = useState(false);
 
   useEffect(() => {
     if (subCategoryId || categoryId) {
@@ -26,10 +27,11 @@ export const useSubSubCategs = (
       } else {
         setSubSubCategs([]);
       }
+      setSubSubCategoriesLoaded(true);
     } catch (err) {
       console.log("Fetch SubSubCategories Error", err);
     }
   };
 
-  return { subSubCategs };
+  return { subSubCategs, subSubCategoriesLoaded };
 };
