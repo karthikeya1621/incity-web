@@ -30,7 +30,7 @@ const Footer = () => {
                     <a
                       href="https://www.google.com/maps/place/17%C2%B028'16.5%22N+78%C2%B030'34.1%22E/@17.4712667,78.507291,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d17.4712616!4d78.5094797"
                       target="_blank"
-                      rel="noreferer"
+                      rel="noreferrer"
                     >
                       Hyderabad,Telangana
                     </a>
