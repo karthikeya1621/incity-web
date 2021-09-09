@@ -3,7 +3,7 @@ import { useStaticContent } from "../hooks";
 
 const PrivacyPolicyPage = () => {
   const { data } = useStaticContent(
-    "https://admin.incity-services.com/RestApi/api/aboutus?key=incitykey!"
+    "https://admin.incity-services.com/RestApi/api/privacy?key=incitykey!"
   );
 
   return (

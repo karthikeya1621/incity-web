@@ -3,7 +3,7 @@ import { useStaticContent } from "../hooks";
 
 const RefundPolicyPage = () => {
   const { data } = useStaticContent(
-    "https://admin.incity-services.com/RestApi/api/aboutus?key=incitykey!"
+    "https://admin.incity-services.com/RestApi/api/refund?key=incitykey!"
   );
 
   return (
