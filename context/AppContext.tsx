@@ -21,6 +21,9 @@ export const AppProvider = (props: any) => {
   const [isCityPopupVisible, setIsCityPopupVisible] = useState(false);
   const [isAddressPopupVisible, setIsAddressPopupVisible] = useState(false);
   const [categoryPopupParent, setCategoryPopupParent] = useState("");
+  const [isUserEditPopupVisible, setIsUserEditPopupVisible] = useState(false);
+  const [isReviewsPopupVisible, setIsReviewsPopupVisible] = useState(false);
+  const [reviewsServiceId, setReviewsServiceId] = useState<any>(null);
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const [selectedCity, setSelectedCity] = useState<any>(null);
@@ -30,6 +33,7 @@ export const AppProvider = (props: any) => {
   const [isIntroDone, setIsIntroDone] = useState<any>(undefined);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(true);
+  const [waitingPopup, setWaitingPopup] = useState<string>("");
   const { providers, categories, allCategories } = useProviders({
     city: selectedCity,
   });
@@ -157,6 +161,47 @@ export const AppProvider = (props: any) => {
     }
   };
 
+  const sequenceCheck = (start: string) => {
+    if (waitingPopup) {
+      const seqs = waitingPopup.split("|");
+      if (seqs[0] == start) {
+        switch (seqs[1]) {
+          case "review":
+            setIsReviewsPopupVisible(true);
+            setWaitingPopup("");
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  };
+
+  const updateUser = async (data: any) => {
+    try {
+      const response = await fetch(
+        "https://admin.incity-services.com/RestApi/api/update_user/update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            key: "incitykey!",
+            id: userData.user_id,
+            type: "user",
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.data) {
+      }
+    } catch (err) {
+      console.log("Update User Error", err);
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, [userData]);
@@ -168,6 +213,8 @@ export const AppProvider = (props: any) => {
         .reduce((total: number, num: number) => total + num, 0);
       setCartCount(cartItems);
       console.log(cartData);
+    } else {
+      setCartCount(0);
     }
   }, [cartData]);
 
@@ -180,6 +227,10 @@ export const AppProvider = (props: any) => {
         setIsCityPopupVisible,
         isAddressPopupVisible,
         setIsAddressPopupVisible,
+        isUserEditPopupVisible,
+        setIsUserEditPopupVisible,
+        isReviewsPopupVisible,
+        setIsReviewsPopupVisible,
         selectedCity,
         setSelectedCity,
         isHeaderSearchVisible,
@@ -205,6 +256,12 @@ export const AppProvider = (props: any) => {
         setCategoryPopupParent,
         isHeaderVisible,
         isFooterVisible,
+        reviewsServiceId,
+        setReviewsServiceId,
+        waitingPopup,
+        setWaitingPopup,
+        sequenceCheck,
+        updateUser,
       }}
     >
       {props.children}

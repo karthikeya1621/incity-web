@@ -136,6 +136,7 @@ const AddressSelectionPopup = () => {
                 key: NEXT_PUBLIC_GOOGLE_MAPS_API,
                 libraries: ["places"],
               }}
+              options={{ fullscreenControl: false }}
               defaultCenter={{ lat: 17.385, lng: 78.4867 }}
               center={mapCenter}
               defaultZoom={16}
@@ -171,7 +172,6 @@ const AddressSelectionPopup = () => {
             flatInput !== null && !flatInput ? styles.error : ""
           }`}
           placeholder="Flat No., Building name"
-          required
           defaultValue={flatInput}
           onChange={(e) => {
             setFlatInput(e.target.value);
@@ -181,7 +181,7 @@ const AddressSelectionPopup = () => {
       <p className={styles.formattedaddress}>{formattedAddress}</p>
       <div className="px-3 w-full">
         <button
-          disabled={!placeData || !flatInput}
+          disabled={!placeData}
           className="w-full button-one"
           onClick={handleConfirmAddress}
         >

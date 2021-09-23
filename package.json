@@ -16,6 +16,7 @@
     "babel-preset-next": "^1.4.0",
     "firebase": "^8.6.8",
     "google-map-react": "^2.1.10",
+    "javascript-time-ago": "^2.3.8",
     "moment": "^2.29.1",
     "next": "11.0.1",
     "react": "17.0.2",
@@ -26,6 +27,7 @@
     "react-otp-input": "^2.4.0",
     "react-phone-input-2": "^2.14.0",
     "react-rating": "^2.0.5",
+    "react-time-ago": "^7.1.1",
     "react-tooltip": "^4.2.21",
     "reactfire": "^3.0.0-rc.0",
     "sass": "^1.35.1",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@types/google-map-react": "^2.1.2",
+    "@types/javascript-time-ago": "^2.0.3",
     "@types/react": "17.0.11",
     "@types/react-dom": "^17.0.9",
     "@types/uuid": "^8.3.1",

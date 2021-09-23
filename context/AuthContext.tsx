@@ -9,8 +9,15 @@ const AuthContext = createContext<any>({});
 export const AuthProvider = (props: any) => {
   const auth = useAuth();
   const router = useRouter();
-  const { setIsLoginPopupVisible, userData, setUserData } =
-    useContext(AppContext);
+  const {
+    setIsLoginPopupVisible,
+    userData,
+    setUserData,
+    waitingPopup,
+    setWaitingPopup,
+    sequenceCheck,
+    updateUser,
+  } = useContext(AppContext);
   const { data: user } = useUser();
   const [recaptchaVerfied, setRecaptchaVerified] = useState(false);
   const [otpConfirmResult, setOtpConfirmResult] =
@@ -24,11 +31,30 @@ export const AuthProvider = (props: any) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (userData && (userData.name == "" || userData.email == "")) {
+      if (user && (user.displayName || user.email)) {
+        updateUser({
+          name: user.displayName,
+          email: user.email,
+        });
+      }
+    }
+    if (userData && userData.phone == "") {
+      if (user && user.phoneNumber) {
+        updateUser({
+          phone: user.phoneNumber.slice(3),
+        });
+      }
+    }
+  }, [userData]);
+
   const loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
       const { user } = await auth.signInWithPopup(provider);
       setIsLoginPopupVisible(false);
+      sequenceCheck("login");
     } catch (err) {
       console.log("Google Login Error", err);
     }
@@ -61,6 +87,7 @@ export const AuthProvider = (props: any) => {
         const { user } = await otpConfirmResult.confirm(otpCode);
         setOtpConfirmResult(null);
         setIsLoginPopupVisible(false);
+        sequenceCheck("login");
       }
     } catch (err) {
       console.log("OTP Confirm Error", err);

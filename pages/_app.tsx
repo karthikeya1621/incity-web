@@ -11,6 +11,10 @@ import { AppProvider } from "../context/AppContext";
 import Head from "next/head";
 import "react-accessible-accordion/dist/fancy-example.css";
 import dynamic from "next/dynamic";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addDefaultLocale(en);
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbCp7GIXh-pKPqTMIrcOnhpCMVqGb2tuQ",

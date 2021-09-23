@@ -1,0 +1,37 @@
+@import "./variables.scss";
+
+.usereditpopup {
+  @apply bg-white rounded-lg shadow-lg p-3 flex justify-center items-center flex-col;
+
+  .mapcontainer {
+    @apply block;
+    width: 300px;
+    height: 300px;
+    .mapbox {
+      @apply relative w-full p-3;
+      height: 300px;
+
+      .marker {
+        @apply px-1 py-1 rounded-full border-4 border-primary;
+      }
+    }
+  }
+  .searchinput {
+    @apply form-input block w-full rounded-md;
+  }
+
+  .flatnameinput {
+    @apply px-3 w-full relative block pt-4 mt-2 border-t-2 border-secondary-light;
+    input {
+      @apply w-full;
+      &.error {
+        @apply ring-red-400 border-red-500;
+      }
+    }
+  }
+
+  .formattedaddress {
+    @apply my-3 px-3 relative text-sm;
+    max-width: 300px;
+  }
+}

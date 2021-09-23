@@ -10,6 +10,8 @@ import Image from "next/image";
 import { URLS } from "../utils/config";
 import AddressSelectionPopup from "./AddressSelectionPopup";
 import CategoryPopup from "./CategoryPopup";
+import UserEditPopup from "./UserEditPopup";
+import ReviewsPopup from "./ReviewsPopup";
 
 function Header() {
   const router = useRouter();
@@ -30,7 +32,12 @@ function Header() {
     breakpoints,
     categoryPopupParent,
     setCategoryPopupParent,
+    isUserEditPopupVisible,
+    setIsUserEditPopupVisible,
+    isReviewsPopupVisible,
+    setIsReviewsPopupVisible,
     isHeaderVisible,
+    reviewsServiceId,
   } = useContext(AppContext);
   const { user, logout } = useContext(AuthContext);
   const videoElem = useRef(null);
@@ -195,6 +202,23 @@ function Header() {
             }}
           >
             <LoginPopup />
+          </PopupOverlay>
+          <PopupOverlay
+            visible={isUserEditPopupVisible}
+            onClose={() => {
+              setIsUserEditPopupVisible(false);
+            }}
+          >
+            <UserEditPopup />
+          </PopupOverlay>
+          <PopupOverlay
+            wide={true}
+            visible={isReviewsPopupVisible}
+            onClose={() => {
+              setIsReviewsPopupVisible(false);
+            }}
+          >
+            <ReviewsPopup serviceId={reviewsServiceId} />
           </PopupOverlay>
           <PopupOverlay
             visible={isAddressPopupVisible}

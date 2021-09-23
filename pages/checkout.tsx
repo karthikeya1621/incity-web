@@ -185,7 +185,7 @@ const CheckoutPage = () => {
 
     const options = {
       // key: "rzp_test_8v5BjQduGZotWJ",
-      key: "rzp_test_bHbhVsNpAKgMvI",
+      key: "rzp_live_BbPitvokOWbtzh",
       amount: placeOrderResult.amount.toString(),
       currency: placeOrderResult.currency,
       name: "Incity Pvt Ltd.",

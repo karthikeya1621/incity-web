@@ -6,11 +6,13 @@ function PopupOverlay({
   visible,
   onClose,
   enableClose = true,
+  wide = false,
 }: {
   children: any;
   visible?: boolean;
   onClose?: Function;
   enableClose?: boolean;
+  wide?: boolean;
 }) {
   const closePopup = () => {
     if (onClose) {

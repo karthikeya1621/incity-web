@@ -41,6 +41,8 @@ const ServiceDetailsPage = (props: any) => {
     cartData,
     setCategoryPopupParent,
     deleteCartItem,
+    setIsReviewsPopupVisible,
+    setReviewsServiceId,
   } = useContext(AppContext);
   const [holderHeight, setHolderHeight] = useState(90);
 
@@ -447,22 +449,43 @@ const ServiceDetailsPage = (props: any) => {
                             </span>
                           )}
                         </div>
-                        <Rating
-                          readonly
-                          initialRating={service.rate || 0}
-                          start={0}
-                          stop={5}
-                          fullSymbol={
-                            <>
-                              <span className="mdi mdi-star text-yellow-400"></span>
-                            </>
-                          }
-                          emptySymbol={
-                            <>
-                              <span className="mdi mdi-star-outline text-yellow-400"></span>
-                            </>
-                          }
-                        />
+                        <div
+                          className="cursor-pointer flex"
+                          onClick={() => {
+                            setIsReviewsPopupVisible(true);
+                            setReviewsServiceId(service.id);
+                          }}
+                        >
+                          <Rating
+                            readonly
+                            initialRating={service.rate || 0}
+                            start={0}
+                            stop={5}
+                            fullSymbol={
+                              <>
+                                <span className="mdi mdi-star text-yellow-400"></span>
+                              </>
+                            }
+                            emptySymbol={
+                              <>
+                                <span className="mdi mdi-star-outline text-yellow-400"></span>
+                              </>
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.servicetime}>
+                        <span className="ml-4">
+                          {service.service_time &&
+                            service.service_time > 0 &&
+                            `${
+                              service.service_time / 60 >= 1 &&
+                              Math.floor(service.service_time / 60) + " hr"
+                            } ${
+                              service.service_time % 60 >= 1 &&
+                              (service.service_time % 60) + " min"
+                            }`}
+                        </span>
                       </div>
                       <div className={styles.servicedetails}>
                         {mounted && (

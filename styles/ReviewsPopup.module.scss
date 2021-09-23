@@ -1,0 +1,74 @@
+@import "./variables.scss";
+
+.reviewspopup {
+  @apply bg-white rounded-lg shadow-lg p-3 flex justify-center items-center flex-col w-screen max-w-screen-sm relative;
+  min-width: 300px;
+
+  .mapcontainer {
+    @apply block;
+    width: 300px;
+    height: 300px;
+    .mapbox {
+      @apply relative w-full p-3;
+      height: 300px;
+
+      .marker {
+        @apply px-1 py-1 rounded-full border-4 border-primary;
+      }
+    }
+  }
+  .searchinput {
+    @apply form-input block w-full rounded-md;
+  }
+
+  .flatnameinput {
+    @apply px-3 w-full relative block pt-4 mt-2 border-t-2 border-secondary-light;
+    input {
+      @apply w-full;
+      &.error {
+        @apply ring-red-400 border-red-500;
+      }
+    }
+  }
+
+  .formattedaddress {
+    @apply my-3 px-3 relative text-sm;
+    max-width: 300px;
+  }
+
+  .allreviews {
+    @apply w-full mb-3 py-3;
+
+    .reviewbox {
+      @apply w-full my-1 py-3 border-b;
+      .rowone {
+        @apply flex justify-between my-2;
+        h4 {
+          @apply font-semibold text-gray-600;
+        }
+      }
+      .rowtwo {
+        p {
+          @apply w-full;
+        }
+      }
+    }
+  }
+
+  .reviewform {
+    @apply w-full;
+  }
+
+  .reviewactions {
+    @apply flex justify-between w-full;
+    .avgrating {
+      h1 {
+        @apply ml-3 font-extrabold text-xl text-gray-500 inline;
+
+        span {
+          @apply font-semibold text-base;
+        }
+      }
+    }
+  }
+}

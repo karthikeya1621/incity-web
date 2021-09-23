@@ -23,6 +23,15 @@ export default function Home() {
   } = useContext(AppContext);
   const [slides, setSlides] = useState<any[]>([]);
   const [catsPerRow, setCatsPerRow] = useState(6);
+  const [isMessageSent, setIsMessageSent] = useState(false);
+  const [contactFormData, setContactFormData] = useState({
+    email: "",
+    phone_number: "",
+    message: "",
+    service: "",
+    first_name: "",
+    last_name: "",
+  });
 
   useEffect(() => {
     fetchSlides();
@@ -43,14 +52,37 @@ export default function Home() {
   const fetchSlides = async () => {
     try {
       const response = await fetch(
-        `https://pochieshomeservices.com/RestApi/api/Homeslider/homesliderList?key=incitykey!`
+        `https://admin.incity-services.com/RestApi/api/Homeslider/homesliderList?key=incitykey!`
       );
       const result = await response.json();
       if (result.data.length >= 0) {
-        setSlides(result.data);
+        setSlides(result.data.filter((slide: any) => slide.status == "Enable"));
       }
     } catch (err) {
       console.log("Slides Load Error", err);
+    }
+  };
+
+  const sendMessage = async () => {
+    try {
+      const response = await fetch(
+        "https://admin.incity-services.com/RestApi/api/Contact_us/submit_form",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...contactFormData, key: "incitykey!" }),
+        }
+      );
+      const result = await response.json();
+      if (result.data) {
+        setIsMessageSent(true);
+      } else {
+        setIsMessageSent(false);
+      }
+    } catch (err) {
+      console.log("Message Sending Failed", err);
     }
   };
 
@@ -333,19 +365,47 @@ export default function Home() {
                   <div className="col-span-2 md:col-span-1">
                     <div className="formgroup">
                       <label>Email</label>
-                      <input className="form-input" type="email" />
+                      <input
+                        onChange={(e) => {
+                          setContactFormData({
+                            ...contactFormData,
+                            email: e.target.value,
+                          });
+                        }}
+                        className="form-input"
+                        type="email"
+                      />
                     </div>
                   </div>
                   <div className="col-span-2 md:col-span-1">
                     <div className="formgroup">
                       <label>Name</label>
-                      <input className="form-input" type="text" />
+                      <input
+                        onChange={(e) => {
+                          setContactFormData({
+                            ...contactFormData,
+                            first_name: e.target.value.split(" ")[0] || "",
+                            last_name: e.target.value.split(" ")[1] || "",
+                          });
+                        }}
+                        className="form-input"
+                        type="text"
+                      />
                     </div>
                   </div>
                   <div className="col-span-2">
                     <div className="formgroup">
                       <label>Message</label>
-                      <textarea className="form-textarea" rows={6}></textarea>
+                      <textarea
+                        onChange={(e) => {
+                          setContactFormData({
+                            ...contactFormData,
+                            message: e.target.value,
+                          });
+                        }}
+                        className="form-textarea"
+                        rows={6}
+                      ></textarea>
                     </div>
                   </div>
                   <div className="col-span-2">
@@ -354,6 +414,7 @@ export default function Home() {
                         className="button-one"
                         onClick={(e) => {
                           e.preventDefault();
+                          sendMessage();
                         }}
                       >
                         Submit
