@@ -99,6 +99,10 @@
         width: 110px;
         height: 110px;
         background-image: url(/images/placeholder.gif);
+
+        img {
+          background-color: white;
+        }
       }
 
       .counter {
@@ -174,6 +178,7 @@
       }
 
       .subsubcatsholder {
+        @apply pl-0;
         &.subsubcatsholder_fixed {
           @apply rounded-lg mt-1 bg-white;
           .subsubcats {

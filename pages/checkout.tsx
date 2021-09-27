@@ -14,6 +14,7 @@ const CheckoutPage = () => {
   const [paymentType, setPaymentType] = useState("cod");
   const [placeOrderResult, setPlaceOrderResult] = useState<any>(null);
   const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
+  const [isCodOrderSuccess, setIsCodOrderSuccess] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [taxes, setTaxes] = useState(0);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -37,6 +38,7 @@ const CheckoutPage = () => {
     selectedAddress,
     breakpoints,
     deleteCartItem,
+    clearCart,
   } = useContext(AppContext);
   const router = useRouter();
 
@@ -44,6 +46,8 @@ const CheckoutPage = () => {
     setMounted(true);
     calculateSlots();
     setInterval(() => {}, 1000 * 60 * 10);
+    setIsCodOrderSuccess(false);
+    setIsPaymentSuccess(false);
   }, []);
 
   useEffect(() => {
@@ -56,9 +60,20 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (placeOrderResult) {
-      displayRazorpay(placeOrderResult);
+      if (paymentType !== "cod") {
+        displayRazorpay(placeOrderResult);
+      } else if (paymentType === "cod") {
+        codPayment(placeOrderResult);
+      }
     }
   }, [placeOrderResult]);
+
+  useEffect(() => {
+    if (isPaymentSuccess || isCodOrderSuccess) {
+      clearCart();
+      router.replace("/bookings");
+    }
+  }, [isPaymentSuccess, isCodOrderSuccess]);
 
   useEffect(() => {
     if (cartData.length) {
@@ -70,7 +85,7 @@ const CheckoutPage = () => {
       });
       setTotalPrice(total);
       setTaxes(gst);
-    } else {
+    } else if (!isCodOrderSuccess && !isPaymentSuccess) {
       // router.replace("/");
     }
   }, [cartData]);
@@ -189,7 +204,7 @@ const CheckoutPage = () => {
       amount: placeOrderResult.amount.toString(),
       currency: placeOrderResult.currency,
       name: "Incity Pvt Ltd.",
-      description: "Test Transaction",
+      description: "We believe in service",
       image: URLS.base_url + "images/logo-small.png",
       // order_id: placeOrderResult.id,
       handler: async function (response: any) {
@@ -238,7 +253,6 @@ const CheckoutPage = () => {
         );
         const resultdata = await result.json();
         console.log(resultdata);
-        router.replace("/bookings");
       },
       prefill: {
         name: user.displayName || userData.name,
@@ -258,6 +272,51 @@ const CheckoutPage = () => {
       setIsPaymentSuccess(false);
     });
     paymentObject.open();
+  };
+
+  const codPayment = async (placeOrderResult: any) => {
+    let nowDate = new Date();
+    if (activeDateSlot == 1)
+      nowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    else if (activeDateSlot == 2)
+      nowDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+    const data = {
+      orderCreationId: placeOrderResult.id,
+      key: "incitykey!",
+      user_id: userData.user_id,
+      merchant_orderid: placeOrderResult.id,
+      servicedate:
+        nowDate.getFullYear() +
+        "/" +
+        (nowDate.getMonth() + 1) +
+        "/" +
+        nowDate.getDate(),
+      servicetime: activeSlot,
+      address: "Some Test Address",
+      area: "Some Test Area",
+      pincode: "500090",
+      currency: placeOrderResult.currency,
+      payment_status: "pending",
+      payment_mode: "COD",
+      coupon_amount: 0,
+      amt: placeOrderResult.amount,
+    };
+
+    const result = await fetch(
+      `https://admin.incity-services.com/RestApi/api/payment/order_success`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const resultdata = await result.json();
+    console.log(resultdata);
+    if (resultdata.message == "Order Placed") {
+      setIsCodOrderSuccess(true);
+    }
   };
 
   return (
@@ -390,9 +449,9 @@ const CheckoutPage = () => {
             </div>
           </div>
           {!(breakpoints.xs || breakpoints.sm) && (
-            <div className="col-span-2"></div>
+            <div className="col-span-1"></div>
           )}
-          <div className="col-span-12 md:col-span-5">
+          <div className="col-span-12 md:col-span-6">
             <div className={styles.cartitems}>
               <h3 className={styles.headingone}>Your Cart</h3>
               <div className="pt-3">
@@ -401,7 +460,7 @@ const CheckoutPage = () => {
                     <div className={styles.cartitem} key={`cartitem-${ci}`}>
                       <div className={styles.itemimage}>
                         <Image
-                          src={cartitem.vImage}
+                          src={cartitem.Imageurl}
                           layout="fill"
                           objectFit="cover"
                         />
@@ -442,7 +501,7 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex justify-center items-center text-lg text-secondary-light font-bold">
+                      <div className="flex justify-center items-center text-lg text-secondary-light font-bold ml-auto mr-3">
                         <span>
                           &#x20b9;{" "}
                           {parseFloat(cartitem.fPrice) *

@@ -34,10 +34,39 @@
       left: 0;
       right: 0;
       input {
-        @apply pl-5 py-1 pr-6 form-input rounded-none border focus:border-primary-light focus:ring-primary-dark outline-none w-full border-primary-light border-opacity-30;
+        @apply pl-3 py-1 pr-6 form-input rounded-none border focus:border-primary-light focus:ring-primary-dark outline-none w-full border-primary-light border-opacity-30;
       }
-      span {
-        @apply absolute right-5 top-1;
+      span.mdi {
+        @apply absolute right-3 top-1;
+        &.mdi-close {
+          @apply cursor-pointer;
+        }
+      }
+
+      .resultsbox {
+        @apply absolute px-3 py-4 bg-white shadow-xl rounded-bl-lg rounded-br-lg text-sm;
+        top: 35px;
+        width: max-content;
+        max-width: 100%;
+        left: 0px;
+        min-width: 100%;
+
+        span b {
+          @apply font-semibold text-gray-800;
+        }
+
+        li a {
+          @apply inline-block my-1 py-1 text-xs;
+          max-width: 100%;
+          position: relative;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        li b {
+          @apply font-extrabold text-secondary-light opacity-75;
+        }
       }
     }
 
@@ -53,6 +82,12 @@
         }
         span {
           @apply right-1;
+        }
+
+        .resultsbox {
+          top: 55px;
+          left: 15px;
+          min-width: 95%;
         }
       }
     }

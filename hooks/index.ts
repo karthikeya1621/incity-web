@@ -6,3 +6,4 @@ export { useServices } from "./useServices";
 export { useOrders } from "./useOrders";
 export { useStaticContent } from "./useStaticContent";
 export { useReviews } from "./useReviews";
+export { useSearch } from "./useSearch";

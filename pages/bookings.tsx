@@ -22,15 +22,22 @@ const BookingsPage = () => {
                 <li>#{order.service_order_id}</li>
                 <li>
                   <span className={styles.key}>Payment Status</span>{" "}
-                  {order.payment_status == "success" ? (
+                  {order.payment_status == "success" && (
                     <>
                       <span className="mdi mdi-check-circle-outline text-green-600"></span>{" "}
                       PAID
                     </>
-                  ) : (
+                  )}
+                  {order.payment_status == "pending" && (
+                    <>
+                      <span className="mdi mdi-alert-circle-outline text-yellow-600"></span>{" "}
+                      PENDING
+                    </>
+                  )}
+                  {order.payment_status == "failed" && (
                     <>
                       <span className="mdi mdi-alert-circle-outline text-red-600"></span>{" "}
-                      FAILED
+                      PENDING
                     </>
                   )}
                 </li>
@@ -40,7 +47,15 @@ const BookingsPage = () => {
                 <li>
                   <span className={styles.key}>Duration</span>{" "}
                   <span className="mdi mdi-clock-outline"></span>{" "}
-                  {order.service_time}min
+                  {order.service_time &&
+                    order.service_time > 0 &&
+                    `${
+                      order.service_time / 60 >= 1 &&
+                      Math.floor(order.service_time / 60) + " hr"
+                    } ${
+                      order.service_time % 60 >= 1 &&
+                      (order.service_time % 60) + " min"
+                    }`}
                 </li>
               </div>
               <div className="flex items-center">
@@ -56,7 +71,7 @@ const BookingsPage = () => {
               </div>
             </div>
             {(order.service_qty as number[]).map((qty, qin) => (
-              <>
+              <React.Fragment key={`sq-${qin}`}>
                 {qty > 0 && order.service_name[qin] && (
                   <div
                     className={styles.serviceitem}
@@ -75,7 +90,7 @@ const BookingsPage = () => {
                     </div>
                   </div>
                 )}
-              </>
+              </React.Fragment>
             ))}
             {order.service_name.length % 3 > 0 && (
               <div className="ml-auto"></div>

@@ -213,7 +213,9 @@ const ServiceDetailsPage = (props: any) => {
     )[0];
     const quantity = existingData ? parseInt(existingData.iQuantity) : 0;
     if (quantity + modifier === 0) {
-      await deleteCartItem(parseInt(existingData.iCartId));
+      try {
+        await deleteCartItem(parseInt(existingData.iCartId));
+      } catch (e) {}
       return;
     }
     try {

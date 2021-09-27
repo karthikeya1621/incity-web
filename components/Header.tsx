@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import PopupOverlay from "./PopupOverlay";
 import LoginPopup from "./LoginPopup";
@@ -12,6 +12,9 @@ import AddressSelectionPopup from "./AddressSelectionPopup";
 import CategoryPopup from "./CategoryPopup";
 import UserEditPopup from "./UserEditPopup";
 import ReviewsPopup from "./ReviewsPopup";
+import Toaster from "./Toaster";
+import { useSearch } from "../hooks";
+import { DebounceInput } from "react-debounce-input";
 
 function Header() {
   const router = useRouter();
@@ -41,6 +44,8 @@ function Header() {
   } = useContext(AppContext);
   const { user, logout } = useContext(AuthContext);
   const videoElem = useRef(null);
+  const [query, setQuery] = useState("");
+  const { results, isSearching, isDone } = useSearch(query);
 
   const handleLoginButton = () => {
     setIsLoginPopupVisible(true);
@@ -84,8 +89,65 @@ function Header() {
                     router.route != "/") && (
                     <>
                       <div className={`searchbar`}>
-                        <input type="text" placeholder="Search a service" />
-                        <span className="mdi mdi-magnify"></span>
+                        <DebounceInput
+                          placeholder="Search a service"
+                          value={query}
+                          type="text"
+                          minLength={3}
+                          debounceTimeout={400}
+                          onChange={(event) => {
+                            setQuery(event.target.value);
+                          }}
+                        />
+                        {query.length == 0 && (
+                          <span className="mdi mdi-magnify"></span>
+                        )}
+                        {query.length > 0 && isDone && (
+                          <span
+                            className="mdi mdi-close"
+                            onClick={() => {
+                              setQuery("");
+                            }}
+                          ></span>
+                        )}
+                        {query.length > 0 && isSearching && (
+                          <span className="mdi mdi-loading mdi-spin"></span>
+                        )}
+                        {query.length > 0 && (
+                          <div className="resultsbox">
+                            {isSearching && (
+                              <span className="italic">Searching...</span>
+                            )}
+                            {!isSearching && isDone && (
+                              <>
+                                {results.length > 0 && (
+                                  <ul>
+                                    {results.map((result, ri) => (
+                                      <li
+                                        key={"res" + ri}
+                                        onClick={() => {
+                                          setQuery("");
+                                        }}
+                                      >
+                                        <Link href={result.link} passHref>
+                                          <a>
+                                            {result.service} <small>in</small>{" "}
+                                            <b>{result.category}</b>
+                                          </a>
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                                {results.length == 0 && (
+                                  <span>
+                                    No Results for <b>"{query}"</b>
+                                  </span>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </>
                   )}
@@ -236,6 +298,8 @@ function Header() {
           >
             <CategoryPopup />
           </PopupOverlay>
+
+          <Toaster />
 
           <div
             className={`videointro ${isIntroDone == "true" ? "done" : ""} ${

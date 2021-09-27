@@ -33,7 +33,13 @@ export const AppProvider = (props: any) => {
   const [isIntroDone, setIsIntroDone] = useState<any>(undefined);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(true);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const [waitingPopup, setWaitingPopup] = useState<string>("");
+  const [toast, setToast] = useState<any>({
+    message: "",
+    status: "",
+    duration: 3000,
+  });
   const { providers, categories, allCategories } = useProviders({
     city: selectedCity,
   });
@@ -161,6 +167,30 @@ export const AppProvider = (props: any) => {
     }
   };
 
+  const clearCart = async () => {
+    try {
+      const response = await fetch(
+        "https://admin.incity-services.com/RestApi/api/cart/deleteCart",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            key: "incitykey!",
+            user_id: userData.user_id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      if (result.data) {
+        getCart();
+      }
+    } catch (err) {
+      console.log("Clear Cart Error", err);
+    }
+  };
+
   const sequenceCheck = (start: string) => {
     if (waitingPopup) {
       const seqs = waitingPopup.split("|");
@@ -262,6 +292,11 @@ export const AppProvider = (props: any) => {
         setWaitingPopup,
         sequenceCheck,
         updateUser,
+        clearCart,
+        toast,
+        setToast,
+        isSearchActive,
+        setIsSearchActive,
       }}
     >
       {props.children}
