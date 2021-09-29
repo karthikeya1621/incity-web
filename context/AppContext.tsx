@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { NEXT_PUBLIC_GOOGLE_MAPS_API } from "../utils/config";
-import { useCities, useProviders } from "../hooks";
+import { useCities, useProviders, useSiteInfo } from "../hooks";
 import AuthContext from "./AuthContext";
 import { useBreakpoints } from "react-breakpoints-hook";
 
@@ -47,6 +47,7 @@ export const AppProvider = (props: any) => {
   const router = useRouter();
 
   const { cities } = useCities();
+  const siteInfo = useSiteInfo();
 
   useEffect(() => {
     const isvisited = localStorage.getItem("isvisited");
@@ -297,6 +298,7 @@ export const AppProvider = (props: any) => {
         setToast,
         isSearchActive,
         setIsSearchActive,
+        siteInfo,
       }}
     >
       {props.children}

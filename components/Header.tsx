@@ -52,6 +52,12 @@ function Header() {
   };
 
   useEffect(() => {
+    if (!isHeaderSearchVisible) {
+      setQuery("");
+    }
+  }, [isHeaderSearchVisible]);
+
+  useEffect(() => {
     if (isIntroDone == "false" && videoElem.current) {
       (videoElem.current as any).play();
     }

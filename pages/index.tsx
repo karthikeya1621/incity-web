@@ -9,6 +9,8 @@ import SwiperCore, { Autoplay } from "swiper";
 import { URLS } from "../utils/config";
 import Link from "next/link";
 import slugify from "slugify";
+import { useSearch, useSiteInfo } from "../hooks";
+import { DebounceInput } from "react-debounce-input";
 
 SwiperCore.use([Autoplay]);
 
@@ -20,6 +22,7 @@ export default function Home() {
     categories,
     breakpoints,
     setCategoryPopupParent,
+    siteInfo,
   } = useContext(AppContext);
   const [slides, setSlides] = useState<any[]>([]);
   const [catsPerRow, setCatsPerRow] = useState(6);
@@ -32,6 +35,8 @@ export default function Home() {
     first_name: "",
     last_name: "",
   });
+  const [query, setQuery] = useState("");
+  const { results, isSearching, isDone } = useSearch(query);
 
   useEffect(() => {
     fetchSlides();
@@ -39,6 +44,9 @@ export default function Home() {
 
   useEffect(() => {
     setIsHeaderSearchVisible(!inView);
+    if (inView) {
+      setQuery("");
+    }
   }, [inView]);
 
   useEffect(() => {
@@ -125,9 +133,72 @@ export default function Home() {
           <div className="grid grid-cols-12">
             <div className="col-span-12">
               <div className={styles.searchbox}>
-                <div className={styles.searchbar}>
-                  <input type="text" placeholder="Search a service" />
-                  <span className="mdi mdi-magnify"></span>
+                <div
+                  className={
+                    styles.searchbar +
+                    " " +
+                    (query.length > 0 && styles.isactive)
+                  }
+                >
+                  <DebounceInput
+                    placeholder="Search a service"
+                    value={query}
+                    type="text"
+                    minLength={3}
+                    debounceTimeout={400}
+                    onChange={(event) => {
+                      setQuery(event.target.value);
+                    }}
+                  />
+                  {query.length == 0 && (
+                    <span className="mdi mdi-magnify absolute right-3 top-2"></span>
+                  )}
+                  {query.length > 0 && isDone && (
+                    <span
+                      className="mdi mdi-close absolute right-3 top-2"
+                      onClick={() => {
+                        setQuery("");
+                      }}
+                    ></span>
+                  )}
+                  {query.length > 0 && isSearching && (
+                    <span className="mdi mdi-loading mdi-spin absolute right-3 top-2"></span>
+                  )}
+                  {query.length > 0 && (
+                    <div className={styles.resultsbox}>
+                      {isSearching && (
+                        <span className="italic">Searching...</span>
+                      )}
+                      {!isSearching && isDone && (
+                        <>
+                          {results.length > 0 && (
+                            <ul>
+                              {results.map((result, ri) => (
+                                <li
+                                  key={"res" + ri}
+                                  onClick={() => {
+                                    setQuery("");
+                                  }}
+                                >
+                                  <Link href={result.link} passHref>
+                                    <a>
+                                      {result.service} <small>in</small>{" "}
+                                      <b>{result.category}</b>
+                                    </a>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          {results.length == 0 && (
+                            <span>
+                              No Results for <b>"{query}"</b>
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <small>
                   Example: Saloon for women, Electricians, Pest Control etc

@@ -5,7 +5,7 @@ import AppContext from "../context/AppContext";
 import styles from "../styles/Footer.module.scss";
 
 const Footer = () => {
-  const { categories, isFooterVisible, setCategoryPopupParent } =
+  const { categories, isFooterVisible, setCategoryPopupParent, siteInfo } =
     useContext(AppContext);
 
   return (
@@ -18,7 +18,11 @@ const Footer = () => {
               <div className={styles.contactitem}>
                 <span className="mdi mdi-cellphone"></span>
                 <div>
-                  <strong>+910000000000</strong>
+                  <strong>
+                    <a href={`tel:${siteInfo?.phone?.replace(" ", "")}`}>
+                      {siteInfo?.phone?.replace(" ", "")}
+                    </a>
+                  </strong>
                   <h6>Support 24/7 Weekdays</h6>
                 </div>
               </div>
@@ -42,7 +46,7 @@ const Footer = () => {
                 <span className="mdi mdi-email-outline"></span>
                 <div>
                   <h6>
-                    <a href="mailto:info@incity.in">info@incity.in</a>
+                    <a href={`mailto:${siteInfo?.email}`}>{siteInfo?.email}</a>
                   </h6>
                 </div>
               </div>
