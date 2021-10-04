@@ -47,15 +47,7 @@ const BookingsPage = () => {
                 <li>
                   <span className={styles.key}>Duration</span>{" "}
                   <span className="mdi mdi-clock-outline"></span>{" "}
-                  {order.service_time &&
-                    order.service_time > 0 &&
-                    `${
-                      order.service_time / 60 >= 1 &&
-                      Math.floor(order.service_time / 60) + " hr"
-                    } ${
-                      order.service_time % 60 >= 1 &&
-                      (order.service_time % 60) + " min"
-                    }`}
+                  {order.service_time}
                 </li>
               </div>
               <div className="flex items-center">

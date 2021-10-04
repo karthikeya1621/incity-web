@@ -132,6 +132,7 @@ const CheckoutPage = () => {
             quantity: quantity + modifier,
             sub_total: parseFloat(cartitem.fPrice),
             total_amount: parseFloat(cartitem.fPrice),
+            duration: cartitem.duration,
             gst: 2,
             user_id: userData.user_id,
             key: "incitykey!",

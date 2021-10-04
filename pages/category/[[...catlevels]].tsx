@@ -193,6 +193,7 @@ const ServiceDetailsPage = (props: any) => {
             quantity: quantity + 1,
             sub_total: parseFloat(service.price),
             total_amount: parseFloat(service.price),
+            duration: service.service_time,
             gst: 2,
             user_id: userData.user_id,
             key: "incitykey!",
@@ -235,6 +236,7 @@ const ServiceDetailsPage = (props: any) => {
             quantity: quantity + modifier,
             sub_total: parseFloat(service.price),
             total_amount: parseFloat(service.price),
+            duration: service.service_time,
             gst: 2,
             user_id: userData.user_id,
             key: "incitykey!",
@@ -475,18 +477,8 @@ const ServiceDetailsPage = (props: any) => {
                             }
                           />
                         </div>
-                      </div>
-                      <div className={styles.servicetime}>
-                        <span className="ml-4">
-                          {service.service_time &&
-                            service.service_time > 0 &&
-                            `${
-                              service.service_time / 60 >= 1 &&
-                              Math.floor(service.service_time / 60) + " hr"
-                            } ${
-                              service.service_time % 60 >= 1 &&
-                              (service.service_time % 60) + " min"
-                            }`}
+                        <span className="mt-2 block">
+                          Service Time: {service.service_time}
                         </span>
                       </div>
                       <div className={styles.servicedetails}>
